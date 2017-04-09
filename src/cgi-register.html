@@ -1,14 +1,17 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="cgi-register">
@@ -19,19 +22,171 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         padding: 10px;
       }
+      paper-dropdown-menu, paper-listbox {
+          width: 250px;
+      }
+      paper-dropdown-menu {
+          margin: auto;
+      }
+      paper-button {
+          background: #ac3535;
+          color: white;
+      }
     </style>
 
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+      <paper-input label="Voornaam" required></paper-input>
+      <paper-input label="Achternaam" required></paper-input>
+      <paper-checkbox>Nederlands</paper-checkbox>
+      <paper-checkbox>Engels</paper-checkbox>
+      <paper-input label="Telefoonnummer" required></paper-input>
+      <paper-input label="Email-adres" required></paper-input>
+      <paper-input label="LinkedIn URL"></paper-input>
+      <paper-input label="Hoogste Kwalificatie"></paper-input>
+      <paper-input label="Afstudeer Jaar" auto-validate allowed-pattern="[0-9]></paper-input>
+      <paper-input label="Gecertificeerd in de laatste drie jaar"></paper-input>
+      <paper-input label="Huidige Rol"></paper-input>
+
+      <paper-dropdown-menu label="Voorkeur Locatie">
+          <paper-listbox class="dropdown-content">
+              <paper-item>Hoofddorp</paper-item>
+              <paper-item>Rotterdam</paper-item>
+              <paper-item>Groningen</paper-item>
+              <paper-item>Arnhem</paper-item>
+              <paper-item>Maastricht</paper-item>
+              <paper-item>Eindhoven</paper-item>
+          </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-dropdown-menu label="Voorkeur Locatie">
+          <paper-listbox class="dropdown-content">
+              <paper-item>Banking</paper-item>
+              <paper-item>Insurance</paper-item>
+              <paper-item>Government</paper-item>
+              <paper-item>Health</paper-item>
+              <paper-item>Manufacturing</paper-item>
+              <paper-item>Retail</paper-item>
+              <paper-item>Oil</paper-item>
+              <paper-item>Gas</paper-item>
+              <paper-item>Communications</paper-item>
+              <paper-item>Telecomunications</paper-item>
+              <paper-item>Service Delivery</paper-item>
+              <paper-item>Gis</paper-item>
+              <paper-item>Space</paper-item>
+              <paper-item>Defence</paper-item>
+              <paper-item>Transport</paper-item>
+              <paper-item>Logistics</paper-item>
+              <paper-item>None</paper-item>
+          </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-input label="Rol Geintresseerd"></paper-input>
+
+      <p>Vaardigheden</p>
+      <paper-menu-button ignore-select>
+          <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
+          <paper-menu class="dropdown-content" multi>
+              <paper-item>Cloud</paper-item>
+              <paper-item>Big Data</paper-item>
+              <paper-item>Esri</paper-item>
+              <paper-item>UX</paper-item>
+              <paper-item>GEO</paper-item>
+              <paper-item>Citrix</paper-item>
+              <paper-item>Functioneel testen</paper-item>
+              <paper-item>Smallworld</paper-item>
+              <paper-item>Java</paper-item>
+              <paper-item>Red Hat</paper-item>
+              <paper-item>Linux</paper-item>
+              <paper-item>LAN</paper-item>
+              <paper-item>WAN</paper-item>
+              <paper-item>Tibco</paper-item>
+              <paper-item>SOA</paper-item>
+              <paper-item>IOS</paper-item>
+              <paper-item>MES</paper-item>
+              <paper-item>MS Cloud</paper-item>
+              <paper-item>Pega</paper-item>
+              <paper-item>SAP</paper-item>
+              <paper-item>Microsoft</paper-item>
+              <paper-item>SAP HANA</paper-item>
+              <paper-item>SAP Hybris</paper-item>
+              <paper-item>SAP ME</paper-item>
+              <paper-item>Cyber security</paper-item>
+              <paper-item>Technisch testen</paper-item>
+              <paper-item>Agile</paper-item></paper-item>
+              <paper-item>Bleuriq</paper-item>
+              <paper-item>C#</paper-item>
+              <paper-item>.Net</paper-item>
+              <paper-item>ETL</paper-item>
+          </paper-menu>
+      </paper-menu-button>
+<!--
+      <paper-dropdown-menu label="Vaardigheden">
+          <paper-listbox multi class="dropdown-content">
+              <paper-item>Cloud</paper-item>
+              <paper-item>Big Data</paper-item>
+              <paper-item>Esri</paper-item>
+              <paper-item>UX</paper-item>
+              <paper-item>GEO</paper-item>
+              <paper-item>Citrix</paper-item>
+              <paper-item>Functioneel testen</paper-item>
+              <paper-item>Smallworld</paper-item>
+              <paper-item>Java</paper-item>
+              <paper-item>Red Hat</paper-item>
+              <paper-item>Linux</paper-item>
+              <paper-item>LAN</paper-item>
+              <paper-item>WAN</paper-item>
+              <paper-item>Tibco</paper-item>
+              <paper-item>SOA</paper-item>
+              <paper-item>IOS</paper-item>
+              <paper-item>MES</paper-item>
+              <paper-item>MS Cloud</paper-item>
+              <paper-item>Pega</paper-item>
+              <paper-item>SAP</paper-item>
+              <paper-item>Microsoft</paper-item>
+              <paper-item>SAP HANA</paper-item>
+              <paper-item>SAP Hybris</paper-item>
+              <paper-item>SAP ME</paper-item>
+              <paper-item>Cyber security</paper-item>
+              <paper-item>Technisch testen</paper-item>
+              <paper-item>Agile</paper-item></paper-item>
+              <paper-item>Bleuriq</paper-item>
+              <paper-item>C#</paper-item>
+              <paper-item>.Net</paper-item>
+              <paper-item>ETL</paper-item>
+          </paper-listbox>
+      </paper-dropdown-menu>
+-->
+      <paper-dropdown-menu label="Contact Persoon">
+          <paper-listbox class="dropdown-content">
+              <paper-item>Chris de Jong</paper-item>
+          </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-dropdown-menu label="Groep">
+          <paper-listbox class="dropdown-content">
+              <paper-item>A</paper-item>
+              <paper-item>B</paper-item>
+              <paper-item>C</paper-item>
+          </paper-listbox>
+      </paper-dropdown-menu>
+
+      <paper-textarea label="Opmerkingen"></paper-textarea>
+
+      <paper-button on-tap="toggleDialog">Privacy Disclaimer</paper-button>
+      <paper-checkbox>Akkoord</paper-checkbox>
+
+      <paper-checkbox>Abonneren op de Nieuwsbrief</paper-checkbox>
+
+      <paper-dialog id="privacyDlg">
+          <p><h3>Personal information collation statement</h3></p><p><b>Conditions for use of the Recruitment Event Registration Tool CGI Netherlands B.V. (Hereinafter CGI). </b></p><p>Your personal information will be considered confidential information and that information is used only for the purpose described below.</p><p>CGI is committed to the Dutch and European legislation on the use of personal data.</p><p><b>The purpose of the use of your data.</b></p><p>The purpose of the use of your personal data in the CGI Recruitment Event Registration Tool is to ease the chance of a career at CGI and to stay informed of our recruitment events. </p><p><b>Update and delete your personal data. </b></p><p>You can always remove your personal information from our database. That responsibility we leave to you. We will keep your data for a maximum period of one year or until you previously indicate that it is no longer desirable. </p><p>By accepting this statement you consent to saving your personal information.</p>
+      </paper-dialog>
   </template>
 
   <script>
     Polymer({
       is: 'cgi-register',
+        toggleDialog: function() {
+            this.$.privacyDlg.toggle();
+        },
     });
   </script>
 </dom-module>
