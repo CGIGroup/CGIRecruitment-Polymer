@@ -71,7 +71,6 @@
 
             .drawer-list a {
                 display: block;
-                padding: 0 16px;
                 text-decoration: none;
                 color: var(--app-secondary-color);
                 line-height: 40px;
@@ -105,10 +104,9 @@
         <firebase-auth
                 id="auth"
                 user="{{user}}"
-                status-known="{{statusKnown}}"
-                provider="google">
+                status-known="{{statusKnown}}">
         </firebase-auth>
-
+        <!--provider="google">-->
 
         <app-location route="{{route}}"></app-location>
         <app-route
@@ -158,16 +156,16 @@
 
                         </div>
                     </paper-header-panel>
-                    <div main class="fit">
+                    <div main>
                         <iron-pages
                                 selected="[[page]]"
                                 attr-for-selected="name"
                                 fallback-selection="view404"
                                 role="main">
-                            <cgi-home name="home"></cgi-home>
-                            <cgi-register name="register"></cgi-register>
-                            <cgi-admin name="admin"></cgi-admin>
-                            <cgi-view404 name="view404"></cgi-view404>
+                            <cgi-home class="fit" name="home"></cgi-home>
+                            <cgi-register class="fit" name="register"></cgi-register>
+                            <cgi-admin class="fit" name="admin"></cgi-admin>
+                            <cgi-view404 class="fit" name="view404"></cgi-view404>
                         </iron-pages>
                     </div>
                 </paper-drawer-panel>
