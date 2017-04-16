@@ -1,0 +1,67 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-datatable/paper-datatable.html">
+<link rel="import" href="../bower_components/paper-datatable/paper-datatable-column.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="cgi-users">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+            }
+            paper-button {
+                background: #ac3535;
+                color: white;
+            }
+        </style>
+
+        <firebase-query
+                id = "query"
+                path = "/users"
+                data = "{{data}}">
+        </firebase-query>
+
+        <paper-button on-tap="addRow">Add User</paper-button>
+        <paper-button on-tap="deleteRow">Delete User</paper-button>
+
+        <paper-datatable data="{{data}}" selectable>
+            <paper-datatable-column header="Name" property="displayName" sortable type="String" editable></paper-datatable-column>
+            <paper-datatable-column header="Email" property="email" sortable type="String" editable></paper-datatable-column>
+            <paper-datatable-column header="Admin" property="admin" sortable type="Boolean" editable></paper-datatable-column>
+        </paper-datatable>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'cgi-users',
+            properties:{
+                data: {
+                    type: Array,
+                    value: [],
+                    observer: 'dataChanged'
+                }
+            },
+
+            addRow: function(event){
+                var newUser = {
+                    displayName:"",
+                    email:"@cgi.com",
+                    admin:false
+                };
+                this.$.query.ref.push(newUser);
+            },
+
+            deleteRow: function(event){
+
+            },
+
+            dataChanged: function(newValue, oldValue) {
+                console.log('data:', oldValue, 'to', newValue);
+            }
+        });
+    </script>
+</dom-module>

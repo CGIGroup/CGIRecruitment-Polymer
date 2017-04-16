@@ -25,7 +25,6 @@
                 position: relative;
                 overflow-y: auto;
                 padding: 10px;
-                margin: 0 0 20px 0;
             }
             paper-input{
                 --paper-input-container:{width:25em;};
@@ -51,8 +50,8 @@
 
         <firebase-document
                 id="ref"
-                path="/candidates/{{id}}"
-                data="{{formsData}}">
+                path="/candidates/"
+                data="{{_data}}">
         </firebase-document>
 
         <form is="iron-form" id="form" disable-native-validation-ui>
@@ -209,7 +208,8 @@
             },
 
             _sendForm: function() {
-                if (navigator.onLine) {
+                this.$.ref.add(this._data);
+                /*if (navigator.onLine) {
                     this.$.auth.signInAnonymously().then(function() {
                         this.set('_data.isComplete', true);
                         this.$.toast.show({text: 'Form was sent.', duration: 8000});
@@ -220,7 +220,7 @@
                     }.bind(this));
                 } else {
                     this._isWaitingForOnline = true;
-                }
+                }*/
             },
         });
     </script>

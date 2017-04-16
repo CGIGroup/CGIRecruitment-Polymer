@@ -1,4 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<!-- http://stackoverflow.com/questions/41443228/polymer-firebase-polymerfire-firebase-query-not-working-inside-single-pag -->
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
@@ -6,27 +8,28 @@
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
 <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
-<link rel="import" href="my-icons.html">
+<link rel="import" href="cgi-icons.html">
 
 <dom-module id="cgi-app">
     <template>
         <style include="iron-flex iron-flex-alignment iron-positioning"></style>
 
-        <style>
+        <style include="shared-styles">
             :host {
                 --app-primary-color: #ac3535;
                 --app-secondary-color: black;
@@ -93,7 +96,7 @@
         </style>
 
         <!-- IMPORTANT: The firebase-app element needs to appear before any
-             other firebase-* elements -->
+             other firebase-* elements-->
         <firebase-app
                 id="firebase"
                 api-key="AIzaSyBHNhMnbxuzNYKODVZbUbmEH3bsSIRtCKU"
@@ -104,7 +107,7 @@
         <firebase-auth
                 id="auth"
                 user="{{user}}"
-                status-known="{{statusKnown}}">
+                provider="google">
         </firebase-auth>
         <!--provider="google">-->
 
@@ -118,7 +121,7 @@
         <paper-scroll-header-panel fixed>
             <paper-toolbar >
                 <!-- Attach an event listener here -->
-                <paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
+                <paper-icon-button icon="cgi-icons:menu" on-tap="toggleDrawer"></paper-icon-button>
                 <div class="flex"></div>
                 <div class="bottom title">CGI Recruitment</div>
                 <span>
@@ -135,18 +138,12 @@
                 <paper-drawer-panel id="drawerPanel">
                     <paper-header-panel mode="scroll" drawer>
                         <div class="layout vertical fit">
-                            <paper-dropdown-menu class="drawer-list" label="Event">
-                                <paper-listbox class="dropdown-content">
-                                    <paper-item>Bedrijvendag Haagse Hoge School</paper-item>
-                                    <paper-item>Bèta Career Event</paper-item>
-                                    <paper-item>Iot Tech Day</paper-item>
-                                </paper-listbox>
-                            </paper-dropdown-menu>
 
                             <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                                 <a name="home" href="/home">Home</a>
                                 <a name="register" href="/register">Register</a>
-                                <a name="admin" href="/admin">Admin</a>
+                                <a name="candidates" href="/candidates">Candidates</a>
+                                <a name="users" href="/users">Users</a>
                             </iron-selector>
 
                             <div class="flex"></div>
@@ -164,13 +161,48 @@
                                 role="main">
                             <cgi-home class="fit" name="home"></cgi-home>
                             <cgi-register class="fit" name="register"></cgi-register>
-                            <cgi-admin class="fit" name="admin"></cgi-admin>
+                            <cgi-candidates class="fit" name="candidates"></cgi-candidates>
+                            <cgi-users class="fit" name="users"></cgi-users>
                             <cgi-view404 class="fit" name="view404"></cgi-view404>
                         </iron-pages>
                     </div>
                 </paper-drawer-panel>
             </div>
         </paper-scroll-header-panel>
+
+
+        <paper-dialog id="loginDlg">
+            <div class="error" hidden$="[[!error]]">[[error.code]]: [[error.message]]</div>
+            <div hidden$="[[user]]">
+                <form on-submit="signInWithEmailAndPassword">
+                    <paper-dropdown-menu class="drawer-list" label="Event" value="{{event::input}}">
+                        <paper-listbox class="dropdown-content">
+                            <paper-item>Bedrijvendag Haagse Hoge School</paper-item>
+                            <paper-item>Bèta Career Event</paper-item>
+                            <paper-item>Iot Tech Day</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <br>
+                    <paper-input label="Email-adres" value="{{email::input}}" type="email"></paper-input>
+                    <paper-input label="Naam" value="{{displayName::input}}"></paper-input>
+                    <paper-input label="Wachtwoord" value="{{password::input}}" type="password"></paper-input>
+                    <br>
+                    <paper-button on-tap="signInWithEmailAndPassword">Sign In</paper-button>
+                    <paper-button on-tap="createUserWithEmailAndPassword">Sign Up</paper-button>
+                    <br><br>
+                </form>
+            </div>
+            <div hidden$="[[!user]]">
+                <table>
+                    <tr><th>uid</th> <td>[[user.uid]]</td></tr>
+                    <tr><th>displayName</th> <td>[[user.displayName]]</td></tr>
+                    <tr><th>email</th> <td>[[user.email]]</td></tr>
+                    <tr><th>emailVerified</th> <td>[[user.emailVerified]]</td></tr>
+                </table>
+
+                <button on-tap="signOut">Sign Out</button>
+            </div>
+        </paper-dialog>
         <!--
         <div class="layout vertical fit">
             <paper-toolbar>
@@ -196,7 +228,7 @@
                     <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                         <a name="home" href="/home">Home</a>
                         <a name="register" href="/register">Register</a>
-                        <a name="admin" href="/admin">Admin</a>
+                        <a name="candidates" href="/candidates">candidates</a>
                     </iron-selector>
 
                 </app-drawer>
@@ -218,7 +250,7 @@
                             role="main">
                         <cgi-home name="home"></cgi-home>
                         <cgi-register name="register"></cgi-register>
-                        <cgi-admin name="admin"></cgi-admin>
+                        <cgi-candidates name="candidates"></cgi-candidates>
                         <cgi-view404 name="view404"></cgi-view404>
                     </iron-pages>
                 </app-header-layout>
@@ -256,9 +288,9 @@
             _routePageChanged: function(page) {
                 this.page = page || 'home';
 
-                //if (!this.$.drawer.persistent) {
-                //    this.$.drawer.close();
-                //}
+                if (!this.$.drawerPanel.persistent) {
+                    this.$.drawerPanel.closeDrawer();
+                }
             },
 
             _pageChanged: function(page) {
@@ -272,10 +304,35 @@
             },
             login: function() {
                 return this.$.auth.signInWithPopup();
+                //this.$.loginDlg.toggle();
             },
             logout: function() {
                 return this.$.auth.signOut();
             },
+
+            showError: function(e) {
+                this.error = e.detail;
+            },
+
+            signInWithEmailAndPassword: function(e) {
+                if (e) { e.preventDefault(); }
+                this.error = null;
+                this.$.auth.signInWithEmailAndPassword(this.email, this.password);
+                this.email = null;
+                this.password = null;
+            },
+
+            createUserWithEmailAndPassword: function() {
+                this.error = null;
+                this.$.auth.createUserWithEmailAndPassword(this.email, this.password, this.displayName);
+                this.email = null;
+                this.password = null;
+            },
+
+            signOut: function() {
+                this.error = null;
+                this.$.auth.signOut();
+            }
         });
     </script>
 </dom-module>

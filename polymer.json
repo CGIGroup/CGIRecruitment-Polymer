@@ -1,10 +1,11 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/cgi-app.html",
   "fragments": [
     "src/cgi-home.html",
     "src/cgi-register.html",
-    "src/chi-admin.html",
+    "src/cgi-candidates.html",
+    "src/cgi-users.html",
     "src/cgi-view404.html"
   ],
   "sourceGlobs": [

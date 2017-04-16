@@ -87,8 +87,8 @@
     <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
     <link rel="import" href="/src/cgi-app.html">
-
-    <style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style><!--must: is="custom-style"-->
+    <!--in main page must be: is="custom-style"-->
+    <style is="custom-style" include="iron-flex iron-flex-alignment iron-positioning"></style>
     <style>
         body {
             margin: 0;
@@ -100,6 +100,6 @@
     </style>
 </head>
 <body class="fullbleed layout vertical">
-<cgi-app class="flex"></cgi-app>
+    <cgi-app class="flex"></cgi-app>
 </body>
 </html>
