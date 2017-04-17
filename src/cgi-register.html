@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
@@ -55,31 +56,60 @@
         </firebase-document>
 
         <form is="iron-form" id="form" disable-native-validation-ui>
+
             <paper-input label="Voornaam" required
                          value="{{_data.firstName}}"
-                         error-message="Please fill out this field."></paper-input>
+                         error-message="Please fill out this field.">
+            </paper-input>
+
             <paper-input label="Achternaam" required
                          value="{{_data.lastName}}"
-                         error-message="Please fill out this field."></paper-input>
+                         error-message="Please fill out this field.">
+            </paper-input>
+
             <paper-checkbox value="{{_data.dutch}}">Nederlands</paper-checkbox>
+
             <paper-checkbox value="{{_data.english}}">Engels</paper-checkbox>
+
             <paper-input label="Telefoonnummer" required
-                         value="{{_data.telno}}"></paper-input>
+                         value="{{_data.telno}}">
+            </paper-input>
+
             <paper-input label="Email-adres" required
                          value="{{_data.email}}"
                          autocomplete="email"
                          pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
                          error-message="Invalid email address."
-                         placeholder="name@example.com"></paper-input>
-            <paper-input label="LinkedIn URL"></paper-input>
-            <br>
-            <paper-input label="Hoogste Kwalificatie"></paper-input>
-            <paper-input label="Afstudeer Jaar" auto-validate allowed-pattern="[0-9]"
-                         placeholder="2000"></paper-input>
-            <paper-input label="Gecertificeerd in de laatste drie jaar"></paper-input>
-            <paper-input label="Huidige Rol"></paper-input>
+                         placeholder="name@example.com">
+            </paper-input>
 
-            <paper-dropdown-menu label="Voorkeur Locatie">
+            <paper-input label="LinkedIn URL"
+                         value="{{_data.linkedinUrl}}">
+            </paper-input>
+
+            <br>
+            <paper-input label="Hoogste Kwalificatie"
+                         value="{{_data.highestQualification}}">
+            </paper-input>
+
+            <paper-input label="Afstudeer Jaar"
+                         value="{{_data.graduationYear}}"
+                         auto-validate
+                         allowed-pattern="[0-9]"
+                         placeholder="2000">
+            </paper-input>
+
+            <paper-input label="Gecertificeerd in de laatste drie jaar"
+                         value="{{_data.certified}}">
+            </paper-input>
+
+            <paper-input label="Huidige Rol"
+                         value="{{_data.currentRoll}}">
+            </paper-input>
+
+
+            <paper-dropdown-menu label="Voorkeur Locatie"
+                                 value="{{_data.preferredLocation}}">
                 <paper-listbox class="dropdown-content">
                     <paper-item>Hoofddorp</paper-item>
                     <paper-item>Rotterdam</paper-item>
@@ -89,8 +119,11 @@
                     <paper-item>Eindhoven</paper-item>
                 </paper-listbox>
             </paper-dropdown-menu>
+
             <br>
-            <paper-dropdown-menu label="Voorkeur voor Sector">
+
+            <paper-dropdown-menu label="Voorkeur voor Sector"
+                                 value="{{_data.preferredSector}}">
                 <paper-listbox class="dropdown-content">
                     <paper-item>Banking</paper-item>
                     <paper-item>Insurance</paper-item>
@@ -112,11 +145,16 @@
                 </paper-listbox>
             </paper-dropdown-menu>
 
-            <paper-input label="Rol Geintresseerd"></paper-input>
+            <paper-input label="Rol Geintresseerd"
+                         value="{{_data.preferredRoll}}">
+            </paper-input>
 
             <paper-button on-tap="toggleSkillsDialog">Vaardigheden</paper-button>
+
             <paper-dialog id="skillsDlg">
-                <paper-listbox multi class="dropdown-content">
+                <paper-listbox class="dropdown-content"
+                               value="{{_data.skills}}"
+                               multi>
                     <paper-item>Cloud</paper-item>
                     <paper-item>Big Data</paper-item>
                     <paper-item>Esri</paper-item>
@@ -143,49 +181,63 @@
                     <paper-item>SAP ME</paper-item>
                     <paper-item>Cyber security</paper-item>
                     <paper-item>Technisch testen</paper-item>
-                    <paper-item>Agile</paper-item></paper-item>
+                    <paper-item>Agile</paper-item>
                     <paper-item>Bleuriq</paper-item>
                     <paper-item>C#</paper-item>
                     <paper-item>.Net</paper-item>
                     <paper-item>ETL</paper-item>
                 </paper-listbox>
             </paper-dialog>
+
             <br>
+
             <paper-dropdown-menu label="Contact Persoon">
-                <paper-listbox class="dropdown-content">
+                <paper-listbox class="dropdown-content"
+                               value="{{_data.contact}}">
                     <paper-item>Chris de Jong</paper-item>
                 </paper-listbox>
             </paper-dropdown-menu>
+
             <br>
+
             <paper-dropdown-menu label="Groep">
-                <paper-listbox class="dropdown-content">
+                <paper-listbox class="dropdown-content"
+                               value="{{_data.group}}">
                     <paper-item>A</paper-item>
                     <paper-item>B</paper-item>
                     <paper-item>C</paper-item>
                 </paper-listbox>
             </paper-dropdown-menu>
 
-            <paper-textarea label="Opmerkingen"></paper-textarea>
+            <paper-textarea label="Opmerkingen"
+                            value="{{_data.remarks}}">
+            </paper-textarea>
 
             <br>
+
             <paper-button on-tap="toggleDialog">Privacy Disclaimer</paper-button>
-            <paper-checkbox>Akkoord</paper-checkbox>
-            <br>
-            <br>
-            <paper-checkbox>Abonneren op de Nieuwsbrief</paper-checkbox>
-
             <paper-dialog id="privacyDlg">
                 <p><h3>Personal information collation statement</h3></p><p><b>Conditions for use of the Recruitment Event Registration Tool CGI Netherlands B.V. (Hereinafter CGI). </b></p><p>Your personal information will be considered confidential information and that information is used only for the purpose described below.</p><p>CGI is committed to the Dutch and European legislation on the use of personal data.</p><p><b>The purpose of the use of your data.</b></p><p>The purpose of the use of your personal data in the CGI Recruitment Event Registration Tool is to ease the chance of a career at CGI and to stay informed of our recruitment events. </p><p><b>Update and delete your personal data. </b></p><p>You can always remove your personal information from our database. That responsibility we leave to you. We will keep your data for a maximum period of one year or until you previously indicate that it is no longer desirable. </p><p>By accepting this statement you consent to saving your personal information.</p>
             </paper-dialog>
 
+            <paper-checkbox value="{{_data.disclaimer}}">Akkoord</paper-checkbox>
+
             <br>
             <br>
+
+            <paper-checkbox value="{{_data.newsLetter}}">Abonneren op de Nieuwsbrief</paper-checkbox>
+
+            <br>
+            <br>
+
             <div class="buttons">
-                <paper-button raised on-tap="_resetForm">Reset</paper-button>
-                <paper-button raised on-tap="_submitForm">Submit</paper-button>
+                <paper-button on-tap="resetForm">Reset</paper-button>
+                <paper-button on-tap="submitForm">Submit</paper-button>
             </div>
+
             <br>
             <br>
+
         </form>
     </template>
 
@@ -193,7 +245,15 @@
         Polymer({
             is: 'cgi-register',
             propertirs:{
-                _data: Object,
+                _data: {
+                    type: Object,
+                    value:{
+                        disclaimer: false,
+                        dutch: false,
+                        english: false,
+                        newsLetter: false
+                    }
+                },
                 _formsData: Object,
             },
             toggleDialog: function() {
@@ -203,13 +263,16 @@
                 this.$.skillsDlg.toggle();
             },
 
-            _resetForm: function() {
+            resetForm: function() {
                 this.$.form.reset();
             },
 
-            _sendForm: function() {
+            submitForm: function() {
                 this.$.ref.add(this._data);
-                /*if (navigator.onLine) {
+                /*var doc = this.create('firebase-document', this._data);
+
+                doc.save('/candidates');
+                if (navigator.onLine) {
                     this.$.auth.signInAnonymously().then(function() {
                         this.set('_data.isComplete', true);
                         this.$.toast.show({text: 'Form was sent.', duration: 8000});

@@ -26,13 +26,14 @@
         </firebase-query>
 
         <paper-button on-tap="addRow">Add User</paper-button>
-        <paper-button on-tap="deleteRow">Delete User</paper-button>
+        <paper-button on-tap="deleteRow" disabled="[[!selectedItem]]">Delete User</paper-button>
 
-        <paper-datatable data="{{data}}" selectable>
+        <paper-datatable data="{{data}}" selected-item="{{selectedItem}}" selectable>
             <paper-datatable-column header="Name" property="displayName" sortable type="String" editable></paper-datatable-column>
             <paper-datatable-column header="Email" property="email" sortable type="String" editable></paper-datatable-column>
             <paper-datatable-column header="Admin" property="admin" sortable type="Boolean" editable></paper-datatable-column>
         </paper-datatable>
+
     </template>
 
     <script>
@@ -43,10 +44,13 @@
                     type: Array,
                     value: [],
                     observer: 'dataChanged'
+                },
+                selectedItem: {
+                    value: null
                 }
             },
 
-            addRow: function(event){
+            addRow: function(e){
                 var newUser = {
                     displayName:"",
                     email:"@cgi.com",
@@ -55,8 +59,12 @@
                 this.$.query.ref.push(newUser);
             },
 
-            deleteRow: function(event){
-
+            deleteRow: function(e){
+                var key = this.selectedItem.$key;
+                var ref = this.$.query.child(key);
+                ref.set(null);
+                ref.update(null);
+                ref.remove();
             },
 
             dataChanged: function(newValue, oldValue) {

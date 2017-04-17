@@ -1,27 +1,216 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-datatable/paper-datatable.html">
+<link rel="import" href="../bower_components/paper-datatable/paper-datatable-column.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="cgi-candidates">
-  <template>
-    <style include="shared-styles">
-      :host {
-        display: block;
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
 
-        padding: 10px;
-      }
-    </style>
+                padding: 10px;
+            }
+        </style>
 
-    <div class="card">
-      <div class="circle">3</div>
-      <h1>View Three</h1>
-      <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
-    </div>
-  </template>
+        <firebase-query
+                id = "query"
+                path = "/candidates"
+                data = "{{data}}">
+        </firebase-query>
 
-  <script>
-    Polymer({
-      is: 'cgi-candidates',
-    });
-  </script>
+        <paper-button on-tap="deleteRow" disabled="[[!selectedItem]]">Delete Candidate</paper-button>
+        <paper-button on-tap="export">Export</paper-button>
+
+        <paper-datatable data="{{data}}" selected-item="{{selectedItem}}" selectable>
+            <paper-datatable-column
+                    header="Voornaam"
+                    property="{{firstName}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Achternaam"
+                    property="{{lastName}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Nederlands"
+                    property="{{dutch}}"
+                    type="Boolean"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Engels"
+                    property="{{english}}"
+                    type="Boolean" sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Telefoonnummer"
+                    property="{{telno}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Email-adres"
+                    property="{{email}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="LinkedIn URL"
+                    property="{{linkedinUrl}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Hoogste Kwalificatie"
+                    property="{{highestQualification}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Afstudeer Jaar"
+                    property="{{graduationYear}}"
+                    type="Number"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Gecertificeerd"
+                    property="{{certified}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Huidige Rol"
+                    property="{{currentRoll}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Voorkeur Locatie"
+                    property="{{preferredLocation}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Voorkeur Sector"
+                    property="{{preferedSector}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Rol Geintresseerd"
+                    property="{{rollInterested}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Vaardigheden"
+                    property="{{skills}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Contact Persoon"
+                    property="{{contact}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Groep"
+                    property="{{group}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Opmerkingen"
+                    property="{{remarks}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Privacy Disclaimer"
+                    property="{{disclaimer}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Nieuwsbrief"
+                    property="{{newsLetter}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Gebruiker"
+                    property="{{user}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Event"
+                    property="{{event}}"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+        </paper-datatable>
+    </template>
+    <script>
+        Polymer({
+            is: 'cgi-candidates',
+            properties:{
+                event:{
+                    type: String,
+                    value: ''
+                },
+                user:{
+                    type: String,
+                    value: ''
+                },
+                selectedItem: {
+                    value: null
+                },
+                deleteRow: function(e){
+                    var key = this.selectedItem.$key;
+                    var ref = this.$.query.child(key);
+                    ref.set(null);
+                    ref.update(null);
+                    ref.remove();
+                },
+                export: function(e){
+                    var key = this.selectedItem.$key;
+                    var ref = this.$.query.child(key);
+                    ref.set(null);
+                    ref.update(null);
+                    ref.remove();
+                }
+            }
+        });
+    </script>
+
 </dom-module>

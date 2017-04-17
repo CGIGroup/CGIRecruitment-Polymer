@@ -125,11 +125,6 @@
                 <div class="flex"></div>
                 <div class="bottom title">CGI Recruitment</div>
                 <span>
-                    <template is="dom-if" if="[[user]]">
-                        <p>User: [[user.displayName]]</p>
-                    </template>
-                </span>
-                <span>
                     <paper-button raised on-tap="login" hidden$="[[user]]">Sign in</paper-button>
                     <paper-button raised on-tap="logout" hidden$="[[!user]]">Sign out</paper-button>
                 </span>
@@ -138,6 +133,10 @@
                 <paper-drawer-panel id="drawerPanel">
                     <paper-header-panel mode="scroll" drawer>
                         <div class="layout vertical fit">
+
+                            <template is="dom-if" if="[[user]]">
+                                <p>User: [[user.displayName]]</p>
+                            </template>
 
                             <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                                 <a name="home" href="/home">Home</a>
