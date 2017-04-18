@@ -135,16 +135,19 @@
                         <div class="layout vertical fit">
 
                             <template is="dom-if" if="[[user]]">
-                                <p>User: [[user.displayName]]</p>
+
+                                <p class="drawer-list">Event: [[event]]</p>
+                                <p class="drawer-list">User: [[user.displayName]]</p>
+                                <br><br>
+
+                                <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                                    <a name="home" href="/home">Home</a>
+                                    <a name="register" href="/register">Register</a>
+                                    <a name="candidates" href="/candidates">Candidates</a>
+                                    <a name="users" href="/users">Users</a>
+                                </iron-selector>
+
                             </template>
-
-                            <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                                <a name="home" href="/home">Home</a>
-                                <a name="register" href="/register">Register</a>
-                                <a name="candidates" href="/candidates">Candidates</a>
-                                <a name="users" href="/users">Users</a>
-                            </iron-selector>
-
                             <div class="flex"></div>
 
                             <iron-icon class="cgipng" src="cgi.png"></iron-icon>
@@ -153,17 +156,19 @@
                         </div>
                     </paper-header-panel>
                     <div main>
-                        <iron-pages
-                                selected="[[page]]"
-                                attr-for-selected="name"
-                                fallback-selection="view404"
-                                role="main">
-                            <cgi-home class="fit" name="home"></cgi-home>
-                            <cgi-register class="fit" name="register"></cgi-register>
-                            <cgi-candidates class="fit" name="candidates"></cgi-candidates>
-                            <cgi-users class="fit" name="users"></cgi-users>
-                            <cgi-view404 class="fit" name="view404"></cgi-view404>
-                        </iron-pages>
+                        <template is="dom-if" if="[[user]]">
+                            <iron-pages
+                                    selected="[[page]]"
+                                    attr-for-selected="name"
+                                    fallback-selection="view404"
+                                    role="main">
+                                <cgi-home class="fit" name="home"></cgi-home>
+                                <cgi-register class="fit" name="register"></cgi-register>
+                                <cgi-candidates class="fit" name="candidates"></cgi-candidates>
+                                <cgi-users class="fit" name="users"></cgi-users>
+                                <cgi-view404 class="fit" name="view404"></cgi-view404>
+                            </iron-pages>
+                        </template>
                     </div>
                 </paper-drawer-panel>
             </div>

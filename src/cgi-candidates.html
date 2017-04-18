@@ -14,6 +14,10 @@
 
                 padding: 10px;
             }
+            paper-button {
+                background: #ac3535;
+                color: white;
+            }
         </style>
 
         <firebase-query
@@ -28,153 +32,153 @@
         <paper-datatable data="{{data}}" selected-item="{{selectedItem}}" selectable>
             <paper-datatable-column
                     header="Voornaam"
-                    property="{{firstName}}"
+                    property="firstName"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Achternaam"
-                    property="{{lastName}}"
+                    property="lastName"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Nederlands"
-                    property="{{dutch}}"
+                    property="dutch"
                     type="Boolean"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Engels"
-                    property="{{english}}"
+                    property="english"
                     type="Boolean" sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Telefoonnummer"
-                    property="{{telno}}"
+                    property="telno"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Email-adres"
-                    property="{{email}}"
+                    property="email"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="LinkedIn URL"
-                    property="{{linkedinUrl}}"
+                    property="linkedinUrl"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Hoogste Kwalificatie"
-                    property="{{highestQualification}}"
+                    property="highestQualification"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Afstudeer Jaar"
-                    property="{{graduationYear}}"
+                    property="graduationYear"
                     type="Number"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Gecertificeerd"
-                    property="{{certified}}"
+                    property="certified"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Huidige Rol"
-                    property="{{currentRoll}}"
-                    type="String"
-                    sortable>
-            </paper-datatable-column>
-
-            <paper-datatable-column
-                    header="Voorkeur Locatie"
-                    property="{{preferredLocation}}"
-                    type="String"
-                    sortable>
-            </paper-datatable-column>
-
-            <paper-datatable-column
-                    header="Voorkeur Sector"
-                    property="{{preferedSector}}"
+                    property="currentRole"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Rol Geintresseerd"
-                    property="{{rollInterested}}"
+                    property="preferredRole"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Voorkeur Locatie"
+                    property="preferredLocation"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Voorkeur Sector"
+                    property="preferredSector"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Vaardigheden"
-                    property="{{skills}}"
+                    property="skills"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Contact Persoon"
-                    property="{{contact}}"
+                    property="contact"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Groep"
-                    property="{{group}}"
+                    property="group"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Opmerkingen"
-                    property="{{remarks}}"
+                    property="remarks"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Privacy Disclaimer"
-                    property="{{disclaimer}}"
-                    type="String"
+                    property="disclaimer"
+                    type="Boolean"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Nieuwsbrief"
-                    property="{{newsLetter}}"
-                    type="String"
+                    property="newsLetter"
+                    type="Boolean"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Gebruiker"
-                    property="{{user}}"
+                    property="user"
                     type="String"
                     sortable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Event"
-                    property="{{event}}"
+                    property="event"
                     type="String"
                     sortable>
             </paper-datatable-column>
@@ -194,21 +198,14 @@
                 },
                 selectedItem: {
                     value: null
-                },
-                deleteRow: function(e){
-                    var key = this.selectedItem.$key;
-                    var ref = this.$.query.child(key);
-                    ref.set(null);
-                    ref.update(null);
-                    ref.remove();
-                },
-                export: function(e){
-                    var key = this.selectedItem.$key;
-                    var ref = this.$.query.child(key);
-                    ref.set(null);
-                    ref.update(null);
-                    ref.remove();
                 }
+            },
+            deleteRow: function(e){
+                var key = this.selectedItem.$key;
+                firebase.database().ref('/candidates/' + key).remove();
+            },
+            export: function(e){
+                //https://cgirecruitment-389df.firebaseio.com/.json?print=pretty&format=export&download=cgirecruitment-389df-export.json&auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0OTI0NjQ2NjUsImV4cCI6MTQ5MjQ2ODI2NSwiYWRtaW4iOnRydWUsInYiOjB9.8q7Mbk3PmjxxE0j12bkbjv61PAP6ksMUbz6Kpbu-drw
             }
         });
     </script>

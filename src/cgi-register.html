@@ -1,10 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/gold-email-input/gold-email-input.html">
+<link rel="import" href="../bower_components/gold-phone-input/gold-phone-input.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
-<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
@@ -15,6 +15,7 @@
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="cgi-register">
@@ -33,6 +34,9 @@
             paper-textarea{
                 --paper-input-container:{width:25em;};
             }
+            gold-email-input{
+                --paper-input-container:{width:25em;};
+            }
             paper-dropdown-menu, paper-listbox {
                 width: 250px;
             }
@@ -47,69 +51,102 @@
                 @apply(--layout-horizontal);
                 @apply(--layout-center);
             }
+            #toast1 {
+                --paper-toast-background-color: lime;
+                --paper-toast-color: black;
+            }
+            #toast0 {
+                --paper-toast-background-color: #ac3535;
+                --paper-toast-color: white;
+            }
         </style>
 
-        <firebase-document
-                id="ref"
-                path="/candidates/"
-                data="{{_data}}">
-        </firebase-document>
+        <firebase-query
+                id = "query"
+                path = "/users"
+                data = "{{users}}">
+        </firebase-query>
 
+        <!-- https://github.com/StickmanVentures/real-time-contact/blob/master/real-time-contact.html -->
         <form is="iron-form" id="form" disable-native-validation-ui>
 
-            <paper-input label="Voornaam" required
-                         value="{{_data.firstName}}"
+            <paper-input label="Voornaam"
+                         required
+                         auto-validate
+                         value={{formData.firstName}}
                          error-message="Please fill out this field.">
             </paper-input>
 
-            <paper-input label="Achternaam" required
-                         value="{{_data.lastName}}"
+            <paper-input label="Achternaam"
+                         required
+                         auto-validate
+                         value="{{formData.lastName}}"
                          error-message="Please fill out this field.">
             </paper-input>
 
-            <paper-checkbox value="{{_data.dutch}}">Nederlands</paper-checkbox>
+            <br>
 
-            <paper-checkbox value="{{_data.english}}">Engels</paper-checkbox>
+            <paper-checkbox checked="{{formData.dutch}}">Nederlands</paper-checkbox>
 
-            <paper-input label="Telefoonnummer" required
-                         value="{{_data.telno}}">
+            <paper-checkbox checked="{{formData.english}}">Engels</paper-checkbox>
+
+            <!--<gold-phone-input label="Telefoonnummer"
+                              required
+                              auto-validate
+                              value="{{formData.telno}}"
+                              country-code="31"
+                              phone-number-pattern="X-XXXX-XXXX">
+            </gold-phone-input>-->
+
+            <paper-input label="Telefoonnummer"
+                         required
+                         auto-validate
+                         value="{{formData.telno}}"
+                         allowed-pattern="[0-9-+]"
+                         maxlength="14"
+                         placeholder="06-12345678">
             </paper-input>
 
-            <paper-input label="Email-adres" required
-                         value="{{_data.email}}"
-                         autocomplete="email"
-                         pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-                         error-message="Invalid email address."
-                         placeholder="name@example.com">
-            </paper-input>
+            <gold-email-input label="Email-adres"
+                              required
+                              auto-validate
+                              value="{{formData.email}}"
+                              error-message="Please enter a valid email"
+                              autocomplete="email"
+                              placeholder="me@example.com">
+            </gold-email-input>
 
             <paper-input label="LinkedIn URL"
-                         value="{{_data.linkedinUrl}}">
+                         value="{{formData.linkedinUrl}}">
             </paper-input>
 
             <br>
             <paper-input label="Hoogste Kwalificatie"
-                         value="{{_data.highestQualification}}">
+                         value="{{formData.highestQualification}}">
             </paper-input>
 
             <paper-input label="Afstudeer Jaar"
-                         value="{{_data.graduationYear}}"
+                         value="{{formData.graduationYear}}"
                          auto-validate
                          allowed-pattern="[0-9]"
-                         placeholder="2000">
+                         placeholder="2000"
+                         maxlength="4">
             </paper-input>
 
             <paper-input label="Gecertificeerd in de laatste drie jaar"
-                         value="{{_data.certified}}">
+                         value="{{formData.certified}}">
             </paper-input>
 
             <paper-input label="Huidige Rol"
-                         value="{{_data.currentRoll}}">
+                         value="{{formData.currentRole}}">
             </paper-input>
 
+            <paper-input label="Rol Geintresseerd"
+                         value="{{formData.preferredRole}}">
+            </paper-input>
 
             <paper-dropdown-menu label="Voorkeur Locatie"
-                                 value="{{_data.preferredLocation}}">
+                                 value="{{formData.preferredLocation}}">
                 <paper-listbox class="dropdown-content">
                     <paper-item>Hoofddorp</paper-item>
                     <paper-item>Rotterdam</paper-item>
@@ -123,7 +160,7 @@
             <br>
 
             <paper-dropdown-menu label="Voorkeur voor Sector"
-                                 value="{{_data.preferredSector}}">
+                                 value="{{formData.preferredSector}}">
                 <paper-listbox class="dropdown-content">
                     <paper-item>Banking</paper-item>
                     <paper-item>Insurance</paper-item>
@@ -145,47 +182,45 @@
                 </paper-listbox>
             </paper-dropdown-menu>
 
-            <paper-input label="Rol Geintresseerd"
-                         value="{{_data.preferredRoll}}">
-            </paper-input>
+            <br>
 
             <paper-button on-tap="toggleSkillsDialog">Vaardigheden</paper-button>
-
             <paper-dialog id="skillsDlg">
                 <paper-listbox class="dropdown-content"
-                               value="{{_data.skills}}"
+                               selected-values="{{formData.skills}}"
+                               attr-for-selected="name"
                                multi>
-                    <paper-item>Cloud</paper-item>
-                    <paper-item>Big Data</paper-item>
-                    <paper-item>Esri</paper-item>
-                    <paper-item>UX</paper-item>
-                    <paper-item>GEO</paper-item>
-                    <paper-item>Citrix</paper-item>
-                    <paper-item>Functioneel testen</paper-item>
-                    <paper-item>Smallworld</paper-item>
-                    <paper-item>Java</paper-item>
-                    <paper-item>Red Hat</paper-item>
-                    <paper-item>Linux</paper-item>
-                    <paper-item>LAN</paper-item>
-                    <paper-item>WAN</paper-item>
-                    <paper-item>Tibco</paper-item>
-                    <paper-item>SOA</paper-item>
-                    <paper-item>IOS</paper-item>
-                    <paper-item>MES</paper-item>
-                    <paper-item>MS Cloud</paper-item>
-                    <paper-item>Pega</paper-item>
-                    <paper-item>SAP</paper-item>
-                    <paper-item>Microsoft</paper-item>
-                    <paper-item>SAP HANA</paper-item>
-                    <paper-item>SAP Hybris</paper-item>
-                    <paper-item>SAP ME</paper-item>
-                    <paper-item>Cyber security</paper-item>
-                    <paper-item>Technisch testen</paper-item>
-                    <paper-item>Agile</paper-item>
-                    <paper-item>Bleuriq</paper-item>
-                    <paper-item>C#</paper-item>
-                    <paper-item>.Net</paper-item>
-                    <paper-item>ETL</paper-item>
+                    <paper-item name="Cloud">Cloud</paper-item>
+                    <paper-item name="Big Data">Big Data</paper-item>
+                    <paper-item name="Esri">Esri</paper-item>
+                    <paper-item name="UX">UX</paper-item>
+                    <paper-item name="GEO">GEO</paper-item>
+                    <paper-item name="Citrix">Citrix</paper-item>
+                    <paper-item name="Functioneel testen">Functioneel testen</paper-item>
+                    <paper-item name="Smallworld">Smallworld</paper-item>
+                    <paper-item name="Java">Java</paper-item>
+                    <paper-item name="Red Hat">Red Hat</paper-item>
+                    <paper-item name="Linux">Linux</paper-item>
+                    <paper-item name="LAN">LAN</paper-item>
+                    <paper-item name="WAN">WAN</paper-item>
+                    <paper-item name="Tibco">Tibco</paper-item>
+                    <paper-item name="SOA">SOA</paper-item>
+                    <paper-item name="IOS">IOS</paper-item>
+                    <paper-item name="MES">MES</paper-item>
+                    <paper-item name="MS Cloud">MS Cloud</paper-item>
+                    <paper-item name="Pega">Pega</paper-item>
+                    <paper-item name="SAP">SAP</paper-item>
+                    <paper-item name="">Microsoft</paper-item>
+                    <paper-item name="Microsoft">SAP HANA</paper-item>
+                    <paper-item name="AP Hybris">SAP Hybris</paper-item>
+                    <paper-item name="SAP ME">SAP ME</paper-item>
+                    <paper-item name="Cyber security">Cyber security</paper-item>
+                    <paper-item name="Technisch testen">Technisch testen</paper-item>
+                    <paper-item name="Agile">Agile</paper-item>
+                    <paper-item name="Bleuriq">Bleuriq</paper-item>
+                    <paper-item name="C#">C#</paper-item>
+                    <paper-item name=".Net">.Net</paper-item>
+                    <paper-item name="ETL">ETL</paper-item>
                 </paper-listbox>
             </paper-dialog>
 
@@ -193,8 +228,12 @@
 
             <paper-dropdown-menu label="Contact Persoon">
                 <paper-listbox class="dropdown-content"
-                               value="{{_data.contact}}">
-                    <paper-item>Chris de Jong</paper-item>
+                               value="{{formData.contact}}"
+                               attr-for-selected="name">
+                    <template is="dom-repeat" items="[[users]]" as="user">
+                        <paper-item name$="[[user.displayName]]">[[user.displayName]]</paper-item>
+                        <!--<paper-item data-category$="{{users.displayName}}" label$="{{item.displayName}}"></paper-item>-->
+                    </template>
                 </paper-listbox>
             </paper-dropdown-menu>
 
@@ -202,7 +241,7 @@
 
             <paper-dropdown-menu label="Groep">
                 <paper-listbox class="dropdown-content"
-                               value="{{_data.group}}">
+                               value="{{formData.group}}">
                     <paper-item>A</paper-item>
                     <paper-item>B</paper-item>
                     <paper-item>C</paper-item>
@@ -210,7 +249,7 @@
             </paper-dropdown-menu>
 
             <paper-textarea label="Opmerkingen"
-                            value="{{_data.remarks}}">
+                            value="{{formData.remarks}}">
             </paper-textarea>
 
             <br>
@@ -220,12 +259,12 @@
                 <p><h3>Personal information collation statement</h3></p><p><b>Conditions for use of the Recruitment Event Registration Tool CGI Netherlands B.V. (Hereinafter CGI). </b></p><p>Your personal information will be considered confidential information and that information is used only for the purpose described below.</p><p>CGI is committed to the Dutch and European legislation on the use of personal data.</p><p><b>The purpose of the use of your data.</b></p><p>The purpose of the use of your personal data in the CGI Recruitment Event Registration Tool is to ease the chance of a career at CGI and to stay informed of our recruitment events. </p><p><b>Update and delete your personal data. </b></p><p>You can always remove your personal information from our database. That responsibility we leave to you. We will keep your data for a maximum period of one year or until you previously indicate that it is no longer desirable. </p><p>By accepting this statement you consent to saving your personal information.</p>
             </paper-dialog>
 
-            <paper-checkbox value="{{_data.disclaimer}}">Akkoord</paper-checkbox>
+            <paper-checkbox checked="{{formData.disclaimer}}">Akkoord</paper-checkbox>
 
             <br>
             <br>
 
-            <paper-checkbox value="{{_data.newsLetter}}">Abonneren op de Nieuwsbrief</paper-checkbox>
+            <paper-checkbox checked="{{formData.newsLetter}}">Abonneren op de Nieuwsbrief</paper-checkbox>
 
             <br>
             <br>
@@ -239,22 +278,30 @@
             <br>
 
         </form>
+        <paper-toast id="toast0" text="Please Complete Mandatory Fields"></paper-toast>
+        <paper-toast id="toast1" text="Saved"></paper-toast>
     </template>
 
     <script>
         Polymer({
             is: 'cgi-register',
-            propertirs:{
-                _data: {
+            properties:{
+                formData: {
                     type: Object,
-                    value:{
-                        disclaimer: false,
-                        dutch: false,
-                        english: false,
-                        newsLetter: false
+                    value: function(){
+                        return {
+                            linkedinUrl: 'https://www.linkedin.com/in/',
+                            skills:[]
+                        };
                     }
                 },
-                _formsData: Object,
+                users: {
+                    type: Array
+                },
+                skills:{
+                    type:Array,
+                    notify:true
+                }
             },
             toggleDialog: function() {
                 this.$.privacyDlg.toggle();
@@ -268,22 +315,17 @@
             },
 
             submitForm: function() {
-                this.$.ref.add(this._data);
-                /*var doc = this.create('firebase-document', this._data);
+                var self = this;
+                if(!this.$.form.validate()) {
+                    this.$.toast0.open();
+                    return;
+                }
 
-                doc.save('/candidates');
-                if (navigator.onLine) {
-                    this.$.auth.signInAnonymously().then(function() {
-                        this.set('_data.isComplete', true);
-                        this.$.toast.show({text: 'Form was sent.', duration: 8000});
-                        this._timestamp = Date.now();
 
-                    }.bind(this)).catch(function(error) {
-                        this.$.toast.show({text: 'Auth error: ' + error.message, duration: 8000});
-                    }.bind(this));
-                } else {
-                    this._isWaitingForOnline = true;
-                }*/
+                firebase.database().ref('/candidates').push(this.formData).then(function(res){
+                    self.$.toast1.open();
+                    self.$.form.reset();
+                });
             },
         });
     </script>

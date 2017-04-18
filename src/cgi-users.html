@@ -11,6 +11,9 @@
         <style include="shared-styles">
             :host {
                 display: block;
+                height: 100%;
+                position: relative;
+                overflow-y: auto;
                 padding: 10px;
             }
             paper-button {
@@ -61,10 +64,9 @@
 
             deleteRow: function(e){
                 var key = this.selectedItem.$key;
-                var ref = this.$.query.child(key);
-                ref.set(null);
-                ref.update(null);
-                ref.remove();
+                firebase.database().ref('/users/' + key).remove();
+                // for some reason this does not work. See Polycast #58
+                //this.$.query.child(key).remove();
             },
 
             dataChanged: function(newValue, oldValue) {
