@@ -73,18 +73,14 @@
             <paper-input label="Voornaam"
                          required
                          auto-validate
-                         value={{formData.firstName}}
-                         error-message="Please fill out this field.">
+                         value={{formData.firstName}}>
             </paper-input>
 
             <paper-input label="Achternaam"
                          required
                          auto-validate
-                         value="{{formData.lastName}}"
-                         error-message="Please fill out this field.">
+                         value="{{formData.lastName}}">
             </paper-input>
-
-            <br>
 
             <paper-checkbox checked="{{formData.dutch}}">Nederlands</paper-checkbox>
 
@@ -111,8 +107,6 @@
                               required
                               auto-validate
                               value="{{formData.email}}"
-                              error-message="Please enter a valid email"
-                              autocomplete="email"
                               placeholder="me@example.com">
             </gold-email-input>
 
@@ -228,7 +222,7 @@
 
             <paper-dropdown-menu label="Contact Persoon">
                 <paper-listbox class="dropdown-content"
-                               value="{{formData.contact}}"
+                               selected="{{formData.contact}}"
                                attr-for-selected="name">
                     <template is="dom-repeat" items="[[users]]" as="user">
                         <paper-item name$="[[user.displayName]]">[[user.displayName]]</paper-item>
@@ -241,10 +235,11 @@
 
             <paper-dropdown-menu label="Groep">
                 <paper-listbox class="dropdown-content"
-                               value="{{formData.group}}">
-                    <paper-item>A</paper-item>
-                    <paper-item>B</paper-item>
-                    <paper-item>C</paper-item>
+                               selected="{{formData.group}}"
+                               attr-for-selected="name">
+                    <paper-item name="A">A</paper-item>
+                    <paper-item name="B">B</paper-item>
+                    <paper-item name="C">C</paper-item>
                 </paper-listbox>
             </paper-dropdown-menu>
 
@@ -295,6 +290,8 @@
                         };
                     }
                 },
+                userName: String,
+                event: String,
                 users: {
                     type: Array
                 },
@@ -321,6 +318,8 @@
                     return;
                 }
 
+                this.formData.user = this.userName;
+                this.formData.event = this.event;
 
                 firebase.database().ref('/candidates').push(this.formData).then(function(res){
                     self.$.toast1.open();

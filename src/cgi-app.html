@@ -163,7 +163,7 @@
                                     fallback-selection="view404"
                                     role="main">
                                 <cgi-home class="fit" name="home"></cgi-home>
-                                <cgi-register class="fit" name="register"></cgi-register>
+                                <cgi-register event="[[event]]" user-name="[[user.displayName]]" class="fit" name="register"></cgi-register>
                                 <cgi-candidates class="fit" name="candidates"></cgi-candidates>
                                 <cgi-users class="fit" name="users"></cgi-users>
                                 <cgi-view404 class="fit" name="view404"></cgi-view404>
@@ -279,6 +279,10 @@
                 statusKnown: {
                     type: Object
                 },
+                event:{
+                    type:String,
+                    value:'EEEEEEEEEEEEEEE'
+                }
             },
             toggleDrawer: function() {
                 this.$.drawerPanel.togglePanel();
