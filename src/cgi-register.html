@@ -16,6 +16,8 @@
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="cgi-register">
@@ -82,8 +84,18 @@
                          value="{{formData.lastName}}">
             </paper-input>
 
-            <paper-checkbox checked="{{formData.dutch}}">Nederlands</paper-checkbox>
+            <paper-radio-group aria-labelledby="label1"
+                               required
+                               auto-validate
+                               selected={{formData.sex}}
+                               attr-for-selected="name">
+                <paper-radio-button name="male">Man</paper-radio-button>
+                <paper-radio-button name="female">Vrouw</paper-radio-button>
+            </paper-radio-group>
 
+            <br>
+
+            <paper-checkbox checked="{{formData.dutch}}">Nederlands</paper-checkbox>
             <paper-checkbox checked="{{formData.english}}">Engels</paper-checkbox>
 
             <!--<gold-phone-input label="Telefoonnummer"
@@ -299,6 +311,9 @@
                     type:Array,
                     notify:true
                 }
+            },
+            ready: function(){
+                this.$.form.validate()
             },
             toggleDialog: function() {
                 this.$.privacyDlg.toggle();

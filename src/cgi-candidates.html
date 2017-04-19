@@ -11,7 +11,9 @@
         <style include="shared-styles">
             :host {
                 display: block;
-
+                height: 100%;
+                position: relative;
+                overflow-y: auto;
                 padding: 10px;
             }
             paper-button {
@@ -40,6 +42,13 @@
             <paper-datatable-column
                     header="Achternaam"
                     property="lastName"
+                    type="String"
+                    sortable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Geslacht"
+                    property="sex"
                     type="String"
                     sortable>
             </paper-datatable-column>
@@ -183,6 +192,8 @@
                     sortable>
             </paper-datatable-column>
         </paper-datatable>
+        <br>
+        <br>
     </template>
     <script>
         Polymer({
