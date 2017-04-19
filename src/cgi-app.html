@@ -147,7 +147,7 @@
 
                             <template is="dom-if" if="[[user]]">
                                 <p class="drawer-list">User: [[displayName]]</p>
-                                <paper-dropdown-menu class="drawer-list" label="Event" value="{{event::input}}">
+                                <paper-dropdown-menu class="drawer-list" label="Event" value="{{event}}">
                                     <paper-listbox class="dropdown-content">
                                         <paper-item>Bedrijvendag Haagse Hoge School</paper-item>
                                         <paper-item>Bèta Career Event</paper-item>
@@ -202,13 +202,15 @@
                                       required
                                       auto-validate
                                       value="{{email}}"
-                                      placeholder="me@cgi.com">
+                                      placeholder="me@cgi.com"
+                                      autocomplete="email">
                     </gold-email-input>
                     <paper-input label="Wachtwoord"
                                  required
                                  auto-validate
                                  value={{password}}
-                                 type="password">
+                                 type="password"
+                                 autocomplete="current-password">
                     </paper-input>
                     <br>
                     <paper-button on-tap="createUserWithEmailAndPassword">First Time Sign Up</paper-button>

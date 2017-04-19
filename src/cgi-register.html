@@ -53,11 +53,11 @@
                 @apply(--layout-horizontal);
                 @apply(--layout-center);
             }
-            #toast1 {
+            .ok {
                 --paper-toast-background-color: lime;
                 --paper-toast-color: black;
             }
-            #toast0 {
+            .error {
                 --paper-toast-background-color: #ac3535;
                 --paper-toast-color: white;
             }
@@ -285,8 +285,9 @@
             <br>
 
         </form>
-        <paper-toast id="toast0" text="Please Complete Mandatory Fields"></paper-toast>
-        <paper-toast id="toast1" text="Saved"></paper-toast>
+        <paper-toast class="error" id="toast0" text="Please Complete Mandatory Fields"></paper-toast>
+        <paper-toast class="ok" id="toast1" text="Saved"></paper-toast>
+        <paper-toast class="error" id="toast2" text="Please select a Career Event on the side panel"></paper-toast>
     </template>
 
     <script>
@@ -328,12 +329,17 @@
 
             submitForm: function() {
                 var self = this;
+                if(!this.event){
+                    this.$.toast2.open();
+                    return;
+                }
+
                 if(!this.$.form.validate()) {
                     this.$.toast0.open();
                     return;
                 }
 
-                this.formData.user = this.userName;
+                this.formData.user = this.userName?this.userName:'';
                 this.formData.event = this.event;
 
                 firebase.database().ref('/candidates').push(this.formData).then(function(res){
