@@ -326,17 +326,15 @@
                 this.error = null;
                 firebase.database().ref().child('users').orderByChild('email').equalTo(this.email).once('value').then(function(snapshot) {
                     var userWhitelist = snapshot.val();
-                    if(userWhitelist){
-                        self.displayName = userWhitelist[key].displayName;
-                        self.$.auth.createUserWithEmailAndPassword(self.email, self.password, userWhitelist.displayName);
-                        //this.$.loginDlg.toggle();
-                    }
-                    else self.error = {message: "Invalid Email Address"};
-
                     for(var prop in userWhitelist) {
                         var val = userWhitelist[prop];
                         self.displayName = val.displayName;
                     }
+                    if(userWhitelist){
+                        self.$.auth.createUserWithEmailAndPassword(self.email, self.password, self.displayName);
+                    }
+                    else self.error = {message: "Invalid Email Address"};
+
                     self.email = null;
                     self.password = null;
                 },
