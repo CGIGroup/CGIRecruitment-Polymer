@@ -146,7 +146,7 @@
                         <div class="layout vertical fit">
 
                             <template is="dom-if" if="[[user]]">
-                                <p class="drawer-list">User: [[displayName]]</p>
+                                <!--<p class="drawer-list">User: [[displayName]]</p>-->
                                 <paper-dropdown-menu class="drawer-list" label="Event" value="{{event}}">
                                     <paper-listbox class="dropdown-content">
                                         <paper-item>Bedrijvendag Haagse Hoge School</paper-item>
@@ -246,9 +246,6 @@
                     type:String
                 },
                 email:{
-                    type:String
-                },
-                displayName:{
                     type:String
                 },
                 password:{

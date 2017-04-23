@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../bower_components/granite-file-saver/granite-file-saver.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="cgi-candidates">
@@ -29,7 +30,11 @@
         </firebase-query>
 
         <paper-button on-tap="deleteRow" disabled="[[!selectedItem]]">Delete Candidate</paper-button>
-        <paper-button on-tap="export">Export</paper-button>
+        <granite-file-saver
+                filename="candidates.csv"
+                payload="[[computeCsv()]]">
+            <paper-button>Export</paper-button>
+        </granite-file-saver>
 
         <paper-datatable data="{{data}}" selected-item="{{selectedItem}}" selectable>
             <paper-datatable-column
@@ -178,12 +183,12 @@
                     sortable>
             </paper-datatable-column>
 
-            <paper-datatable-column
+            <!--<paper-datatable-column
                     header="Gebruiker"
                     property="user"
                     type="String"
                     sortable>
-            </paper-datatable-column>
+            </paper-datatable-column>-->
 
             <paper-datatable-column
                     header="Event"
@@ -215,8 +220,39 @@
                 var key = this.selectedItem.$key;
                 firebase.database().ref('/candidates/' + key).remove();
             },
-            export: function(e){
+            computeCsv: function(){
+                //payload='[ "\"The content\"; 324324,5465;\"to save\";\n","\"The content\"; \"to save\";\n"]'
                 //https://cgirecruitment-389df.firebaseio.com/.json?print=pretty&format=export&download=cgirecruitment-389df-export.json&auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0OTI2MTA0NjYsImV4cCI6MTQ5MjYxNDA2NiwiYWRtaW4iOnRydWUsInYiOjB9.fkgub8y-HNi38QIk-w4QGXCIAKjABEEipg2ONrFfFn8
+                var result = [];
+                result.push(
+                        '"First Name";'+
+                        '"Last Name";'+
+                        '"Sex";'+
+                        '"Dutch";'+
+                        '"English";'+
+                        '"Telno";'+
+                        '"Email";'+
+                        '"Linkedin Url";'+
+                        '"Highest Qualification";'+
+                        '"Graduation Year";'+
+                        '"Gecertificeerd";'+
+                        '"Huidige Rol";'+
+                        '"Preferred Role";'+
+                        '"Preferred Location";'+
+                        '"Preferred Sector";'+
+                        '"Skills";'+
+                        '"Contact";'+
+                        '"Group";'+
+                        '"Remarks";'+
+                        '"Disclaimer";'+
+                        '"NewsLetter";'+
+                        '"Event";'
+                );
+                /*this.data.forEach(function(row){
+                    result.push(
+                            '"'+row.firstName+'";'
+                    );
+                });*/
             }
         });
     </script>
