@@ -3,9 +3,10 @@
   "shell": "src/cgi-app.html",
   "fragments": [
     "src/cgi-home.html",
+    "src/cgi-projects.html",
+    "src/cgi-media.html",
     "src/cgi-register.html",
     "src/cgi-candidates.html",
-    "src/cgi-users.html",
     "src/cgi-admin.html",
     "src/cgi-view404.html"
   ],

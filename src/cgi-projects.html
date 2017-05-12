@@ -1,0 +1,52 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="cgi-projects">
+    <template>
+        <style include="iron-flex iron-flex-alignment">
+            :host {
+                display: block;
+                height: 100%;
+                position: relative;
+                overflow-y: auto;
+                padding: 10px;
+            }
+            a{
+                margin: 10px;
+            }
+            .talk {
+                background: url(../images/bg-input-poll-02.png) repeat-x #9E0033;
+                padding: 3px 5px;
+                cursor: pointer;
+                color:white;
+                font-weight:bold;
+                text-align: center;
+            }
+        </style>
+
+        <div class="layout horizontal wrap">
+
+            <a href="https://cgi.njoyn.com/CGI/xweb/Xweb.asp?tbtoken=Zl9RRxgXCG97YX0DQ1RcCCdMAWBEcFJUe0hZIVB9E21bLUBpL0YbcWoBBwkbVhRSSXEqUA%3D%3D&amp;chk=dFlbQBJe&amp;clid=21001&amp;Page=joblisting&amp;countryid=NL&amp;lang=9" target="_blank">
+                <img src="../images/masthead_njoyn_eng.jpg">
+                <div class="talk">Vraag het aan CGI</div>
+            </a>
+
+            <a href="https://www.cginederland.nl/werken-bij-cgi/projecten" target="_blank">
+                <img src="../images/we-make-it-happen.jpg">
+                <div class="talk">Projecten</div>
+            </a>
+
+            <a href="http://berenschot.media02.iprox.nl/cgi/gIw0wQ/werkenbijcgi/story_html5.html " target="_blank">
+                <img src="../images/match-my-cgi.png">
+            </a>
+
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'cgi-projects',
+        });
+    </script>
+</dom-module>

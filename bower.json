@@ -33,7 +33,11 @@
     "gold-phone-input": "PolymerElements/gold-phone-input#^1.1.0",
     "paper-toast": "PolymerElements/paper-toast#^1.3.1",
     "paper-radio-group": "PolymerElements/paper-radio-group#^1.2.1",
-    "granite-file-saver": "lostinbrittany/granite-file-saver#^1.0.4"
+    "granite-file-saver": "lostinbrittany/granite-file-saver#^1.0.4",
+    "vaadin-date-picker": "vaadin/vaadin-date-picker#^1.2.3",
+    "google-youtube": "GoogleWebComponents/google-youtube#^1.3.0",
+    "simple-carousel": "polymer-simple-carousel#^1.1.0",
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.1.5"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -20,6 +20,9 @@
                 background: #ac3535;
                 color: white;
             }
+            .singleColumn{
+                width:400px
+            }
         </style>
 
         <firebase-query
@@ -33,7 +36,7 @@
         <paper-button on-tap="addEvent">Add Event</paper-button>
         <paper-button on-tap="deleteRow" disabled="[[!selectedEvent]]">Delete Event</paper-button>
 
-        <paper-datatable data="{{events}}" selected-item="{{selectedEvent}}" selectable>
+        <paper-datatable data="{{events}}" selected-item="{{selectedEvent}}" class="singleColumn" selectable>
             <paper-datatable-column header="Event Name" property="name" sortable type="String" editable></paper-datatable-column>
         </paper-datatable>
 
@@ -68,7 +71,7 @@
         <paper-button on-tap="addSector">Add Sector</paper-button>
         <paper-button on-tap="deleteRow" disabled="[[!selectedSector]]">Delete Sector</paper-button>
 
-        <paper-datatable data="{{sectors}}" selected-item="{{selectedSector}}" selectable>
+        <paper-datatable data="{{sectors}}" selected-item="{{selectedSector}}" class="singleColumn" selectable>
             <paper-datatable-column header="Sector Name" property="name" sortable type="String" editable></paper-datatable-column>
         </paper-datatable>
 
@@ -85,7 +88,7 @@
         <paper-button on-tap="addSkill">Add Skill</paper-button>
         <paper-button on-tap="deleteRow" disabled="[[!selectedSkill]]">Delete Skill</paper-button>
 
-        <paper-datatable data="{{skills}}" selected-item="{{selectedSkill}}" selectable>
+        <paper-datatable data="{{skills}}" selected-item="{{selectedSkill}}" class="singleColumn" selectable>
             <paper-datatable-column header="Skill Name" property="name" sortable type="String" editable></paper-datatable-column>
         </paper-datatable>
 
@@ -103,7 +106,7 @@
         <paper-button on-tap="addContact">Add Contact</paper-button>
         <paper-button on-tap="deleteRow" disabled="[[!selectedContact]]">Delete Contact</paper-button>
 
-        <paper-datatable data="{{contacts}}" selected-item="{{selectedContact}}" selectable>
+        <paper-datatable data="{{contacts}}" selected-item="{{selectedContact}}" class="singleColumn" selectable>
             <paper-datatable-column header="Contact Name" property="name" sortable type="String" editable></paper-datatable-column>
         </paper-datatable>
 

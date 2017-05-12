@@ -31,8 +31,7 @@
 
         <paper-button on-tap="deleteRow" disabled="[[!selectedItem]]">Delete Candidate</paper-button>
         <granite-file-saver
-            var dateStr = Date.now().toString();
-                filename="candidates-"+dateStr+".csv"
+                filename="[[computeFilename()]]"
                 payload="[[computeCsv()]]">
             <paper-button>Export</paper-button>
         </granite-file-saver>
@@ -111,9 +110,9 @@
             </paper-datatable-column>
 
             <paper-datatable-column
-                    header="Afstudeer Jaar"
-                    property="graduationYear"
-                    type="Number"
+                    header="Afstudeer Datum"
+                    property="graduationDate"
+                    type="Date"
                     sortable
                     editable>
             </paper-datatable-column>
@@ -250,6 +249,10 @@
                 var key = this.selectedItem.$key;
                 firebase.database().ref('/candidates/' + key).remove();
             },
+            computeFilename: function(){
+                var dateStr = new Date().toLocaleDateString();
+                return "candidates-"+dateStr+".csv";
+            },
             computeCsv: function(){
                 //payload='[ "\"The content\"; 324324,5465;\"to save\";\n","\"The content\"; \"to save\";\n"]'
                 //https://cgirecruitment-389df.firebaseio.com/.json?print=pretty&format=export&download=cgirecruitment-389df-export.json&auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0OTI2MTA0NjYsImV4cCI6MTQ5MjYxNDA2NiwiYWRtaW4iOnRydWUsInYiOjB9.fkgub8y-HNi38QIk-w4QGXCIAKjABEEipg2ONrFfFn8
@@ -278,7 +281,7 @@
                         '\"Event\";'+
                         '\n'
                 );
-                this.data.forEach(function(row){
+                if(this.data) this.data.forEach(function(row){
                     result.push(
                             '\"'+row.firstName+'\";'+
                             '\"'+row.lastName+'\";'+
@@ -304,6 +307,7 @@
                             '\n'
                     );
                 });
+                return result
             }
         });
     </script>
