@@ -7,6 +7,22 @@
     "users": {
       ".read": true,
       ".write": "auth != null"
+    },
+    "events": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "sectors": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "skills": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "contacts": {
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }

@@ -122,6 +122,12 @@
         </firebase-auth>
         <!--provider="google">-->
 
+        <firebase-query
+                id="eventQuery"
+                path = "/events"
+                data = "{{events}}">
+        </firebase-query>
+
         <app-location route="{{route}}"></app-location>
         <app-route
                 route="{{route}}"
@@ -147,11 +153,13 @@
 
                             <template is="dom-if" if="[[user]]">
                                 <!--<p class="drawer-list">User: [[displayName]]</p>-->
-                                <paper-dropdown-menu class="drawer-list" label="Event" value="{{event}}">
-                                    <paper-listbox class="dropdown-content">
-                                        <paper-item>Bedrijvendag Haagse Hoge School</paper-item>
-                                        <paper-item>Bèta Career Event</paper-item>
-                                        <paper-item>Iot Tech Day</paper-item>
+                                <paper-dropdown-menu class="drawer-list" label="Event">
+                                    <paper-listbox class="dropdown-content"
+                                                   selected="{{event}}"
+                                                   attr-for-selected="name">
+                                        <template is="dom-repeat" items="[[events]]" as="event">
+                                            <paper-item name$="[[event.name]]">[[event.name]]</paper-item>
+                                        </template>
                                     </paper-listbox>
                                 </paper-dropdown-menu>
 
@@ -161,7 +169,7 @@
                                     <a name="home" href="/home">Home</a>
                                     <a name="register" href="/register">Register</a>
                                     <a name="candidates" href="/candidates">Candidates</a>
-                                    <a name="users" href="/users">Users</a>
+                                    <a name="admin" href="/admin">Admin</a>
                                 </iron-selector>
 
                             </template>
@@ -184,7 +192,7 @@
                                 <cgi-home class="fit" name="home"></cgi-home>
                                 <cgi-register event="[[event]]" user-name="[[displayName]]" class="fit" name="register"></cgi-register>
                                 <cgi-candidates class="fit" name="candidates"></cgi-candidates>
-                                <cgi-users class="fit" name="users"></cgi-users>
+                                <cgi-admin class="fit" name="admin"></cgi-admin>
                                 <cgi-view404 class="fit" name="view404"></cgi-view404>
                             </iron-pages>
                         </template>

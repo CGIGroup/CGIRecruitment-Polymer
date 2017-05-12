@@ -31,7 +31,8 @@
 
         <paper-button on-tap="deleteRow" disabled="[[!selectedItem]]">Delete Candidate</paper-button>
         <granite-file-saver
-                filename="candidates.csv"
+            var dateStr = Date.now().toString();
+                filename="candidates-"+dateStr+".csv"
                 payload="[[computeCsv()]]">
             <paper-button>Export</paper-button>
         </granite-file-saver>
@@ -41,160 +42,184 @@
                     header="Voornaam"
                     property="firstName"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Achternaam"
                     property="lastName"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
-            <paper-datatable-column
+            <!--<paper-datatable-column
                     header="Geslacht"
                     property="sex"
                     type="String"
-                    sortable>
-            </paper-datatable-column>
+                    sortable
+                    editable>
+            </paper-datatable-column>-->
 
             <paper-datatable-column
                     header="Nederlands"
                     property="dutch"
                     type="Boolean"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Engels"
                     property="english"
-                    type="Boolean" sortable>
+                    type="Boolean"
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Telefoonnummer"
                     property="telno"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Email-adres"
                     property="email"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="LinkedIn URL"
                     property="linkedinUrl"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Hoogste Kwalificatie"
                     property="highestQualification"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Afstudeer Jaar"
                     property="graduationYear"
                     type="Number"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Gecertificeerd"
                     property="certified"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Huidige Rol"
                     property="currentRole"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Rol Geintresseerd"
                     property="preferredRole"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Voorkeur Locatie"
                     property="preferredLocation"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Voorkeur Sector"
                     property="preferredSector"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Vaardigheden"
                     property="skills"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Contact Persoon"
                     property="contact"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Groep"
                     property="group"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Opmerkingen"
                     property="remarks"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Privacy Disclaimer"
                     property="disclaimer"
                     type="Boolean"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <paper-datatable-column
                     header="Nieuwsbrief"
                     property="newsLetter"
                     type="Boolean"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
 
             <!--<paper-datatable-column
                     header="Gebruiker"
                     property="user"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>-->
 
             <paper-datatable-column
                     header="Event"
                     property="event"
                     type="String"
-                    sortable>
+                    sortable
+                    editable>
             </paper-datatable-column>
         </paper-datatable>
         <br>
@@ -204,6 +229,11 @@
         Polymer({
             is: 'cgi-candidates',
             properties:{
+                data: {
+                    type: Array,
+                    value: function(){return [];},
+                    observer: 'dataChanged'
+                },
                 event:{
                     type: String,
                     value: ''
@@ -225,34 +255,55 @@
                 //https://cgirecruitment-389df.firebaseio.com/.json?print=pretty&format=export&download=cgirecruitment-389df-export.json&auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0OTI2MTA0NjYsImV4cCI6MTQ5MjYxNDA2NiwiYWRtaW4iOnRydWUsInYiOjB9.fkgub8y-HNi38QIk-w4QGXCIAKjABEEipg2ONrFfFn8
                 var result = [];
                 result.push(
-                        '"First Name";'+
-                        '"Last Name";'+
-                        '"Sex";'+
-                        '"Dutch";'+
-                        '"English";'+
-                        '"Telno";'+
-                        '"Email";'+
-                        '"Linkedin Url";'+
-                        '"Highest Qualification";'+
-                        '"Graduation Year";'+
-                        '"Gecertificeerd";'+
-                        '"Huidige Rol";'+
-                        '"Preferred Role";'+
-                        '"Preferred Location";'+
-                        '"Preferred Sector";'+
-                        '"Skills";'+
-                        '"Contact";'+
-                        '"Group";'+
-                        '"Remarks";'+
-                        '"Disclaimer";'+
-                        '"NewsLetter";'+
-                        '"Event";'
+                        '\"First Name\";'+
+                        '\"Last Name\";'+
+                        '\"Dutch\";'+
+                        '\"English\";'+
+                        '\"Telno\";'+
+                        '\"Email\";'+
+                        '\"Linkedin Url\";'+
+                        '\"Highest Qualification\";'+
+                        '\"Graduation Year\";'+
+                        '\"Certified\";'+
+                        '\"Huidige Rol\";'+
+                        '\"Preferred Role\";'+
+                        '\"Preferred Location\";'+
+                        '\"Preferred Sector\";'+
+                        '\"Skills\";'+
+                        '\"Contact\";'+
+                        '\"Group\";'+
+                        '\"Remarks\";'+
+                        '\"Disclaimer\";'+
+                        '\"NewsLetter\";'+
+                        '\"Event\";'+
+                        '\n'
                 );
-                /*this.data.forEach(function(row){
+                this.data.forEach(function(row){
                     result.push(
-                            '"'+row.firstName+'";'
+                            '\"'+row.firstName+'\";'+
+                            '\"'+row.lastName+'\";'+
+                            '\"'+row.dutch+'\";'+
+                            '\"'+row.english+'\";'+
+                            '\"'+row.telno+'\";'+
+                            '\"'+row.email+'\";'+
+                            '\"'+row.linkedinUrl+'\";'+
+                            '\"'+row.highestQualification+'\";'+
+                            '\"'+row.graduationYear+'\";'+
+                            '\"'+row.certified+'\";'+
+                            '\"'+row.currentRole+'\";'+
+                            '\"'+row.preferredRole+'\";'+
+                            '\"'+row.preferredLocation+'\";'+
+                            '\"'+row.preferredSector+'\";'+
+                            '\"'+row.skills+'\";'+
+                            '\"'+row.contact+'\";'+
+                            '\"'+row.group+'\";'+
+                            '\"'+row.remarks+'\";'+
+                            '\"'+row.disclaimer+'\";'+
+                            '\"'+row.newsLetter+'\";'+
+                            '\"'+row.event+'\";'+
+                            '\n'
                     );
-                });*/
+                });
             }
         });
     </script>

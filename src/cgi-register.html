@@ -64,10 +64,20 @@
         </style>
 
         <firebase-query
-                id = "query"
-                path = "/users"
-                data = "{{users}}">
+                path = "/sectors"
+                data = "{{sectors}}">
         </firebase-query>
+
+        <firebase-query
+                path = "/skills"
+                data = "{{skills}}">
+        </firebase-query>
+
+        <firebase-query
+                path = "/contacts"
+                data = "{{contacts}}">
+        </firebase-query>
+
 
         <!-- https://github.com/StickmanVentures/real-time-contact/blob/master/real-time-contact.html -->
         <form is="iron-form" id="form" disable-native-validation-ui>
@@ -84,14 +94,14 @@
                          value="{{formData.lastName}}">
             </paper-input>
 
-            <paper-radio-group aria-labelledby="label1"
+            <!--<paper-radio-group aria-labelledby="label1"
                                required
                                auto-validate
                                selected={{formData.sex}}
                                attr-for-selected="name">
                 <paper-radio-button name="male">Man</paper-radio-button>
                 <paper-radio-button name="female">Vrouw</paper-radio-button>
-            </paper-radio-group>
+            </paper-radio-group>-->
 
             <br>
 
@@ -165,26 +175,13 @@
 
             <br>
 
-            <paper-dropdown-menu label="Voorkeur voor Sector"
-                                 value="{{formData.preferredSector}}">
-                <paper-listbox class="dropdown-content">
-                    <paper-item>Banking</paper-item>
-                    <paper-item>Insurance</paper-item>
-                    <paper-item>Government</paper-item>
-                    <paper-item>Health</paper-item>
-                    <paper-item>Manufacturing</paper-item>
-                    <paper-item>Retail</paper-item>
-                    <paper-item>Oil</paper-item>
-                    <paper-item>Gas</paper-item>
-                    <paper-item>Communications</paper-item>
-                    <paper-item>Telecomunications</paper-item>
-                    <paper-item>Service Delivery</paper-item>
-                    <paper-item>Gis</paper-item>
-                    <paper-item>Space</paper-item>
-                    <paper-item>Defence</paper-item>
-                    <paper-item>Transport</paper-item>
-                    <paper-item>Logistics</paper-item>
-                    <paper-item>None</paper-item>
+            <paper-dropdown-menu label="Voorkeur voor Sector">
+                <paper-listbox class="dropdown-content"
+                               selected="{{formData.preferredSector}}"
+                               attr-for-selected="name">
+                    <template is="dom-repeat" items="[[sectors]]" as="sector">
+                        <paper-item name$="[[sector.name]]">[[sector.name]]</paper-item>
+                    </template>
                 </paper-listbox>
             </paper-dropdown-menu>
 
@@ -196,37 +193,10 @@
                                selected-values="{{formData.skills}}"
                                attr-for-selected="name"
                                multi>
-                    <paper-item name="Cloud">Cloud</paper-item>
-                    <paper-item name="Big Data">Big Data</paper-item>
-                    <paper-item name="Esri">Esri</paper-item>
-                    <paper-item name="UX">UX</paper-item>
-                    <paper-item name="GEO">GEO</paper-item>
-                    <paper-item name="Citrix">Citrix</paper-item>
-                    <paper-item name="Functioneel testen">Functioneel testen</paper-item>
-                    <paper-item name="Smallworld">Smallworld</paper-item>
-                    <paper-item name="Java">Java</paper-item>
-                    <paper-item name="Red Hat">Red Hat</paper-item>
-                    <paper-item name="Linux">Linux</paper-item>
-                    <paper-item name="LAN">LAN</paper-item>
-                    <paper-item name="WAN">WAN</paper-item>
-                    <paper-item name="Tibco">Tibco</paper-item>
-                    <paper-item name="SOA">SOA</paper-item>
-                    <paper-item name="IOS">IOS</paper-item>
-                    <paper-item name="MES">MES</paper-item>
-                    <paper-item name="MS Cloud">MS Cloud</paper-item>
-                    <paper-item name="Pega">Pega</paper-item>
-                    <paper-item name="SAP">SAP</paper-item>
-                    <paper-item name="">Microsoft</paper-item>
-                    <paper-item name="Microsoft">SAP HANA</paper-item>
-                    <paper-item name="AP Hybris">SAP Hybris</paper-item>
-                    <paper-item name="SAP ME">SAP ME</paper-item>
-                    <paper-item name="Cyber security">Cyber security</paper-item>
-                    <paper-item name="Technisch testen">Technisch testen</paper-item>
-                    <paper-item name="Agile">Agile</paper-item>
-                    <paper-item name="Bleuriq">Bleuriq</paper-item>
-                    <paper-item name="C#">C#</paper-item>
-                    <paper-item name=".Net">.Net</paper-item>
-                    <paper-item name="ETL">ETL</paper-item>
+
+                    <template is="dom-repeat" items="[[skills]]" as="skill">
+                        <paper-item name$="[[skill.name]]">[[skill.name]]</paper-item>
+                    </template>
                 </paper-listbox>
             </paper-dialog>
 
@@ -236,9 +206,8 @@
                 <paper-listbox class="dropdown-content"
                                selected="{{formData.contact}}"
                                attr-for-selected="name">
-                    <template is="dom-repeat" items="[[users]]" as="user">
-                        <paper-item name$="[[user.displayName]]">[[user.displayName]]</paper-item>
-                        <!--<paper-item data-category$="{{users.displayName}}" label$="{{item.displayName}}"></paper-item>-->
+                    <template is="dom-repeat" items="[[contacts]]" as="contact">
+                        <paper-item name$="[[contact.name]]">[[contact.name]]</paper-item>
                     </template>
                 </paper-listbox>
             </paper-dropdown-menu>
