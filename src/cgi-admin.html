@@ -34,7 +34,7 @@
         <h1>Events</h1>
 
         <paper-button on-tap="addEvent">Add Event</paper-button>
-        <paper-button on-tap="deleteRow" disabled="[[!selectedEvent]]">Delete Event</paper-button>
+        <paper-button on-tap="deleteEvent" disabled="[[!selectedEvent]]">Delete Event</paper-button>
 
         <paper-datatable data="{{events}}" selected-item="{{selectedEvent}}" class="singleColumn" selectable>
             <paper-datatable-column header="Event Name" property="name" sortable type="String" editable></paper-datatable-column>
@@ -51,7 +51,7 @@
         <h1>Users</h1>
 
         <paper-button on-tap="addUser">Add User</paper-button>
-        <paper-button on-tap="deleteRow" disabled="[[!selectedUser]]">Delete User</paper-button>
+        <paper-button on-tap="deleteUser" disabled="[[!selectedUser]]">Delete User</paper-button>
 
         <paper-datatable data="{{users}}" selected-item="{{selectedUser}}" selectable>
             <paper-datatable-column header="User Name" property="displayName" sortable type="String" editable></paper-datatable-column>
@@ -69,7 +69,7 @@
         <h1>Sectors</h1>
 
         <paper-button on-tap="addSector">Add Sector</paper-button>
-        <paper-button on-tap="deleteRow" disabled="[[!selectedSector]]">Delete Sector</paper-button>
+        <paper-button on-tap="deleteSector" disabled="[[!selectedSector]]">Delete Sector</paper-button>
 
         <paper-datatable data="{{sectors}}" selected-item="{{selectedSector}}" class="singleColumn" selectable>
             <paper-datatable-column header="Sector Name" property="name" sortable type="String" editable></paper-datatable-column>
@@ -86,7 +86,7 @@
         <h1>Skills</h1>
 
         <paper-button on-tap="addSkill">Add Skill</paper-button>
-        <paper-button on-tap="deleteRow" disabled="[[!selectedSkill]]">Delete Skill</paper-button>
+        <paper-button on-tap="deleteSkill" disabled="[[!selectedSkill]]">Delete Skill</paper-button>
 
         <paper-datatable data="{{skills}}" selected-item="{{selectedSkill}}" class="singleColumn" selectable>
             <paper-datatable-column header="Skill Name" property="name" sortable type="String" editable></paper-datatable-column>
@@ -104,7 +104,7 @@
         <h1>Contacts</h1>
 
         <paper-button on-tap="addContact">Add Contact</paper-button>
-        <paper-button on-tap="deleteRow" disabled="[[!selectedContact]]">Delete Contact</paper-button>
+        <paper-button on-tap="deleteContact" disabled="[[!selectedContact]]">Delete Contact</paper-button>
 
         <paper-datatable data="{{contacts}}" selected-item="{{selectedContact}}" class="singleColumn" selectable>
             <paper-datatable-column header="Contact Name" property="name" sortable type="String" editable></paper-datatable-column>

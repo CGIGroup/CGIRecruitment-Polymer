@@ -65,6 +65,9 @@
                 --paper-toast-background-color: #ac3535;
                 --paper-toast-color: white;
             }
+            .dialogClass{
+                overflow-y: auto;
+            }
         </style>
 
         <firebase-query
@@ -115,14 +118,6 @@
             <paper-checkbox checked="{{formData.dutch}}">Nederlands</paper-checkbox>
             <paper-checkbox checked="{{formData.english}}">Engels</paper-checkbox>
 
-            <!--<gold-phone-input label="Telefoonnummer"
-                              required
-                              auto-validate
-                              value="{{formData.telno}}"
-                              country-code="31"
-                              phone-number-pattern="X-XXXX-XXXX">
-            </gold-phone-input>-->
-
             <paper-input label="Telefoonnummer"
                          required
                          auto-validate
@@ -148,15 +143,6 @@
                          value="{{formData.highestQualification}}">
             </paper-input>
 
-            <!--
-            <paper-input label="Afstudeer Jaar"
-                         value="{{formData.graduationYear}}"
-                         auto-validate
-                         allowed-pattern="[0-9]"
-                         placeholder="2000"
-                         maxlength="4">
-            </paper-input>
-            -->
             <vaadin-date-picker label="Afstudeer Datum"
                                 value="{{formData.graduationDate}}">
             </vaadin-date-picker>
@@ -204,7 +190,7 @@
             <br>
 
             <paper-button on-tap="toggleSkillsDialog">Vaardigheden</paper-button>
-            <paper-dialog-scrollable id="skillsDlg">
+            <paper-dialog class="dialogClass" id="skillsDlg">
                 <paper-listbox class="dropdown-content"
                                selected-values="{{formData.skills}}"
                                attr-for-selected="name"
@@ -214,20 +200,7 @@
                         <paper-item name$="[[skill.name]]">[[skill.name]]</paper-item>
                     </template>
                 </paper-listbox>
-            </paper-dialog-scrollable>
-
-            <br>
-
-            <paper-dropdown-menu id="skillsMenu" label="Vaardigheden" ignore-select>
-                <paper-listbox class="dropdown-content"
-                               selected-values="{{formData.skills}}"
-                               attr-for-selected="name"
-                               multi>
-                    <template is="dom-repeat" items="[[skills]]" as="skill">
-                        <paper-item name$="[[skill.name]]">[[skill.name]]</paper-item>
-                    </template>
-                </paper-listbox>
-            </paper-dropdown-menu>
+            </paper-dialog>
 
             <br>
 
@@ -312,8 +285,6 @@
                 }
             },
             ready: function(){
-                //this.$.skillsMenu.ignoreSelect = true;
-                this.$.skillsMenu.$.menuButton.ignoreSelect = true;
                 this.$.form.validate()
             },
             toggleDialog: function() {

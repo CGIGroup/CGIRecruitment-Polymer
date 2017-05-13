@@ -4,12 +4,10 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
-<link rel="import" href="../bower_components/granite-file-saver/granite-file-saver.html">
-<link rel="import" href="shared-styles.html">
 
 <dom-module id="cgi-candidates">
     <template>
-        <style include="shared-styles">
+        <style>
             :host {
                 display: block;
                 height: 100%;
@@ -30,11 +28,8 @@
         </firebase-query>
 
         <paper-button on-tap="deleteRow" disabled="[[!selectedItem]]">Delete Candidate</paper-button>
-        <granite-file-saver
-                filename="[[computeFilename()]]"
-                payload="[[computeCsv()]]">
-            <paper-button>Export</paper-button>
-        </granite-file-saver>
+        <paper-button on-tap="exportCandidates">Export Candidates</paper-button>
+        <a id="hiddenSaver" href$="[[_file]]" download="{{_filename}}" hidden></a>
 
         <paper-datatable data="{{data}}" selected-item="{{selectedItem}}" selectable>
             <paper-datatable-column
@@ -251,21 +246,24 @@
                 },
                 selectedItem: {
                     value: null
+                },
+                _file: {
+                    type: Object,
+                    value: null
+                },
+
+                _filename: {
+                    type: String,
+                    value: "warpscript.mc2"
                 }
             },
             deleteRow: function(e){
                 var key = this.selectedItem.$key;
                 firebase.database().ref('/candidates/' + key).remove();
             },
-            computeFilename: function(){
-                var dateStr = new Date().toLocaleDateString();
-                return "candidates-"+dateStr+".csv";
-            },
-            computeCsv: function(){
-                //payload='[ "\"The content\"; 324324,5465;\"to save\";\n","\"The content\"; \"to save\";\n"]'
-                //https://cgirecruitment-389df.firebaseio.com/.json?print=pretty&format=export&download=cgirecruitment-389df-export.json&auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE0OTI2MTA0NjYsImV4cCI6MTQ5MjYxNDA2NiwiYWRtaW4iOnRydWUsInYiOjB9.fkgub8y-HNi38QIk-w4QGXCIAKjABEEipg2ONrFfFn8
-                var result = [];
-                result.push(
+            exportCandidates: function(){
+                var results = [];
+                results.push(
                         '\"First Name\";'+
                         '\"Last Name\";'+
                         '\"Dutch\";'+
@@ -274,7 +272,7 @@
                         '\"Email\";'+
                         '\"Linkedin Url\";'+
                         '\"Highest Qualification\";'+
-                        '\"Graduation Year\";'+
+                        '\"Graduation Date\";'+
                         '\"Certified\";'+
                         '\"Certificate\";'+
                         '\"Huidige Rol\";'+
@@ -290,8 +288,8 @@
                         '\"Event\";'+
                         '\n'
                 );
-                if(this.data) this.data.forEach(function(row){
-                    result.push(
+                this.data.forEach(function(row){
+                    results.push(
                             '\"'+row.firstName+'\";'+
                             '\"'+row.lastName+'\";'+
                             '\"'+row.dutch+'\";'+
@@ -300,7 +298,7 @@
                             '\"'+row.email+'\";'+
                             '\"'+row.linkedinUrl+'\";'+
                             '\"'+row.highestQualification+'\";'+
-                            '\"'+row.graduationYear+'\";'+
+                            '\"'+row.graduationDate+'\";'+
                             '\"'+row.certified+'\";'+
                             '\"'+row.certificate+'\";'+
                             '\"'+row.currentRole+'\";'+
@@ -317,7 +315,22 @@
                             '\n'
                     );
                 });
-                return result
+
+                var data = new Blob(results, {type: "plain/text"});
+
+                var dateStr = new Date().toLocaleDateString();
+                this._filename = "candidates-"+dateStr+".csv";
+
+                // If we are replacing a previously generated file we need to
+                // manually revoke the object URL to avoid memory leaks.
+                if (this._file !== null) {
+                    window.URL.revokeObjectURL(this._file);
+                }
+
+                this._file = window.URL.createObjectURL(data);
+
+                var event = new MouseEvent('click');
+                this.$.hiddenSaver.dispatchEvent(event);
             }
         });
     </script>
