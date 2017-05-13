@@ -69,17 +69,20 @@
 
         <firebase-query
                 path = "/sectors"
-                data = "{{sectors}}">
+                data = "{{sectors}}"
+                order-by-child="name">
         </firebase-query>
 
         <firebase-query
                 path = "/skills"
-                data = "{{skills}}">
+                data = "{{skills}}"
+                order-by-child="name">
         </firebase-query>
 
         <firebase-query
                 path = "/contacts"
-                data = "{{contacts}}">
+                data = "{{contacts}}"
+                order-by-child="name">
         </firebase-query>
 
 
@@ -158,8 +161,12 @@
                                 value="{{formData.graduationDate}}">
             </vaadin-date-picker>
 
-            <paper-input label="Gecertificeerd in de laatste drie jaar"
-                         value="{{formData.certified}}">
+            <br>
+
+            <paper-checkbox checked="{{formData.certified}}">Gecertificeerd in de laatste drie jaar</paper-checkbox>
+            <paper-input label="Certificaat"
+                         value="{{formData.certificate}}"
+                         disabled="[[!formData.certified]]">
             </paper-input>
 
             <paper-input label="Huidige Rol"
@@ -208,6 +215,19 @@
                     </template>
                 </paper-listbox>
             </paper-dialog-scrollable>
+
+            <br>
+
+            <paper-dropdown-menu id="skillsMenu" label="Vaardigheden" ignore-select>
+                <paper-listbox class="dropdown-content"
+                               selected-values="{{formData.skills}}"
+                               attr-for-selected="name"
+                               multi>
+                    <template is="dom-repeat" items="[[skills]]" as="skill">
+                        <paper-item name$="[[skill.name]]">[[skill.name]]</paper-item>
+                    </template>
+                </paper-listbox>
+            </paper-dropdown-menu>
 
             <br>
 
@@ -292,6 +312,8 @@
                 }
             },
             ready: function(){
+                //this.$.skillsMenu.ignoreSelect = true;
+                this.$.skillsMenu.$.menuButton.ignoreSelect = true;
                 this.$.form.validate()
             },
             toggleDialog: function() {

@@ -120,6 +120,14 @@
             <paper-datatable-column
                     header="Gecertificeerd"
                     property="certified"
+                    type="Boolean"
+                    sortable
+                    editable>
+            </paper-datatable-column>
+
+            <paper-datatable-column
+                    header="Certificaat"
+                    property="certificate"
                     type="String"
                     sortable
                     editable>
@@ -268,6 +276,7 @@
                         '\"Highest Qualification\";'+
                         '\"Graduation Year\";'+
                         '\"Certified\";'+
+                        '\"Certificate\";'+
                         '\"Huidige Rol\";'+
                         '\"Preferred Role\";'+
                         '\"Preferred Location\";'+
@@ -293,6 +302,7 @@
                             '\"'+row.highestQualification+'\";'+
                             '\"'+row.graduationYear+'\";'+
                             '\"'+row.certified+'\";'+
+                            '\"'+row.certificate+'\";'+
                             '\"'+row.currentRole+'\";'+
                             '\"'+row.preferredRole+'\";'+
                             '\"'+row.preferredLocation+'\";'+
