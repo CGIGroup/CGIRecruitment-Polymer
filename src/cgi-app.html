@@ -177,7 +177,9 @@
                                     <a name="media" href="/media">Media</a>
                                     <a name="register" href="/register">Register</a>
                                     <a name="candidates" href="/candidates">Candidates</a>
-                                    <a name="admin" href="/admin">Admin</a>
+                                    <template is="dom-if" if="[[cgiUser.admin]]">
+                                        <a name="admin" href="/admin">Admin</a>
+                                    </template>
                                 </iron-selector>
 
                             </template>
@@ -202,7 +204,9 @@
                                 <cgi-media class="fit" name="media"></cgi-media>
                                 <cgi-register event="[[event]]" class="fit" name="register"></cgi-register>
                                 <cgi-candidates class="fit" name="candidates"></cgi-candidates>
-                                <cgi-admin class="fit" name="admin"></cgi-admin>
+                                <template is="dom-if" if="[[cgiUser.admin]]">
+                                    <cgi-admin class="fit" name="admin"></cgi-admin>
+                                </template>
                                 <cgi-view404 class="fit" name="view404"></cgi-view404>
                             </iron-pages>
                         </template>
@@ -230,14 +234,16 @@
                                      auto-validate
                                      value={{password}}
                                      type="password"
-                                     autocomplete="current-password">
+                                     autocomplete="current-password"
+                                     min-length="6">
                         </paper-input>
                         <paper-input label="Herhaal"
                                      required
                                      auto-validate
                                      value={{password1}}
                                      type="password"
-                                     autocomplete="current-password">
+                                     autocomplete="current-password"
+                                     min-length="6">
                         </paper-input>
                         <br>
                         <paper-button on-tap="createUserWithEmailAndPassword">Sign Up</paper-button>
@@ -248,7 +254,8 @@
                                      auto-validate
                                      value={{password}}
                                      type="password"
-                                     autocomplete="current-password">
+                                     autocomplete="current-password"
+                                     min-length="6">
                         </paper-input>
                         <br>
                         <paper-button on-tap="signInWithEmailAndPassword">Sign In</paper-button>
@@ -273,7 +280,7 @@
                 user: {
                     type: Object
                 },
-                statusKnown: {
+                cgiUser: {
                     type: Object
                 },
                 event:{
@@ -347,6 +354,8 @@
                         if(user.signIn) this.signIn = true;
                         else this.signUp = true;
                         this.displayName = user.displayName;
+                        this.email = user.email;
+                        this.cgiUser = user;
                     }
                 }.bind(this));
             },
@@ -357,17 +366,17 @@
             },
 
             signInWithEmailAndPassword: function(e) {
-                var self = this;
                 if (e) { e.preventDefault(); }
                 this.error = null;
-                this.$.auth.signInWithEmailAndPassword(this.email, this.password);
-
-                this.email = null;
-                this.password = null;
+                this.$.auth.signInWithEmailAndPassword(this.email, this.password).then((res) =>{
+                    this.password = null;
+                },(err) => {
+                    this.error = {message: err.message};
+                    this.password = null;
+                });
             },
 
             createUserWithEmailAndPassword: function() {
-                var self = this;
                 this.error = null;
                 if(this.password != this.password1){
                     self.error = {message: "Passwords are not the same"};
@@ -375,10 +384,18 @@
                     self.password1 = null;
                     return;
                 }
-                self.$.auth.createUserWithEmailAndPassword(self.email, self.password, self.displayName);
+                this.$.auth.createUserWithEmailAndPassword(self.email, self.password, self.displayName).then((res) =>{
+                    this.$.userQuery.setStoredValue('users/'+this.cgiUser.$key+'/signIn', true);
+                    this.password = null;
+                    this.password1 = null;
+                },(err) => {
+                    this.error = {message: err.message};
+                    this.password = null;
+                    this.password1 = null;
+                });
 
-                self.password = null;
-                self.password1 = null;
+
+
             },
 
             signOut: function() {
