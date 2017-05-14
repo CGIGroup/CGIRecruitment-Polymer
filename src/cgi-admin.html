@@ -160,7 +160,7 @@
                 this.$.eventQuery.ref.push({name:''});
             },
             deleteEvent: function(e){
-                var key = this.selectedItem.$key;
+                var key = this.selectedEvent.$key;
                 firebase.database().ref('/events/' + key).remove();
                 // for some reason this does not work. See Polycast #58
                 //this.$.query.child(key).remove();
@@ -170,7 +170,7 @@
                 this.$.userQuery.ref.push({displayName:''});
             },
             deleteUser: function(e){
-                var key = this.selectedItem.$key;
+                var key = this.selectedUser.$key;
                 firebase.database().ref('/users/' + key).remove();
                 // for some reason this does not work. See Polycast #58
                 //this.$.query.child(key).remove();
@@ -180,7 +180,7 @@
                 this.$.sectorQuery.ref.push({name:''});
             },
             deleteSector: function(e){
-                var key = this.selectedItem.$key;
+                var key = this.selectedSector.$key;
                 firebase.database().ref('/sectors/' + key).remove();
                 // for some reason this does not work. See Polycast #58
                 //this.$.query.child(key).remove();
@@ -190,7 +190,7 @@
                 this.$.skillQuery.ref.push({name:''});
             },
             deleteSkill: function(e){
-                var key = this.selectedItem.$key;
+                var key = this.selectedSkill.$key;
                 firebase.database().ref('/skills/' + key).remove();
                 // for some reason this does not work. See Polycast #58
                 //this.$.query.child(key).remove();
@@ -200,7 +200,7 @@
                 this.$.contactQuery.ref.push({name:''});
             },
             deleteContact: function(e){
-                var key = this.selectedItem.$key;
+                var key = this.selectedContact.$key;
                 firebase.database().ref('/contacts/' + key).remove();
                 // for some reason this does not work. See Polycast #58
                 //this.$.query.child(key).remove();
