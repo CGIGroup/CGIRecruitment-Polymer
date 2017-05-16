@@ -354,7 +354,6 @@
                         if(user.signIn) this.signIn = true;
                         else this.signUp = true;
                         this.displayName = user.displayName;
-                        this.email = user.email;
                         this.cgiUser = user;
                     }
                 }.bind(this));
@@ -384,7 +383,7 @@
                     self.password1 = null;
                     return;
                 }
-                this.$.auth.createUserWithEmailAndPassword(self.email, self.password, self.displayName).then((res) =>{
+                this.$.auth.createUserWithEmailAndPassword(this.cgiUser.email, this.password, this.cgiUser.displayName).then((res) =>{
                     this.$.userQuery.setStoredValue('users/'+this.cgiUser.$key+'/signIn', true);
                     this.password = null;
                     this.password1 = null;
