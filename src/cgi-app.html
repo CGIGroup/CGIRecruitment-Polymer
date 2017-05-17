@@ -122,11 +122,14 @@
         </firebase-auth>
         <!--provider="google">-->
 
-        <firebase-query
+
+        <template is="dom-if" if="[[user]]">
+            <firebase-query
                 id="eventQuery"
                 path = "/events"
                 data = "{{events}}">
-        </firebase-query>
+            </firebase-query>
+        </template>
 
         <firebase-query
                 id="userQuery"
